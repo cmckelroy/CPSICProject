@@ -15,7 +15,7 @@ private:
 	string Role;
 public:
 	/**
-	This funciton allows an administrator to generate a campus alert by typing a message.
+	This function allows an administrator to generate a campus alert by typing a message.
 
 	@param message The administrator can create a unique message for each alert.
 

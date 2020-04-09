@@ -1,7 +1,8 @@
 #pragma once
+#include "PaymentReceipt.h"
 #include "CPSICUser.h"
 #include "AbsoluteTimeRange.h"
-//#include "PaymentReceipt.h"
+#include <vector>
 
 /*! \brief A patient is a KSU student or staff member who has sought care from the medical department.
   *  
@@ -15,8 +16,8 @@ private:
 	bool IsStudent;
 	bool IsStaff;
 	string Health_records;
-	int Bill;//Should this be made a class?
-	//PaymentRepeipt receipt;//object of class PaymentRepeipt
+	double balance;
+	std::vector<PaymentReceipt> receipts;
 	bool HasShownFluSymptoms;
 	bool IsInfected;
 	bool HasSoughtCounseling;
@@ -31,7 +32,7 @@ public:
 	@param amount This is the amount the patient wants to pay towards their bill.
 
 	*/
-	void make_payment(string payment_type, int payment_card_number, int amount);
+	void make_payment(string payment_type, int payment_card_number, double amount);
 
 	/**
 	This function cancels an appointment. It doesn't require a clinician_ID like the cancel_appointment() function

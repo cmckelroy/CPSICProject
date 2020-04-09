@@ -1,12 +1,13 @@
 #pragma once
-#include <string>//Do I need this, or will it be included in the main file?
+#include <string>
 using namespace std;
 #include "Appointment.h"
+
 /*! \brief This class is the parent class of the Clinician, Patient,and Administrator classes.
  */
 class CPSICUser {
 protected:
-	int KSU_ID;/*!< unique for each Clinitian, Patient, and Administrator */
+	int KSU_ID;         //unique for each Clinitian, Patient, and Administrator
 	string FirstName;
 	string LastName;
 public:
@@ -44,7 +45,6 @@ public:
 	This function prints coronavirus data for a given region.
 
 	@param region The region is the geographical area that the user wishes to see coronavirus data about.
-
 
 	*/
 	void visualize_coronavirus_data(string region);

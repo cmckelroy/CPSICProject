@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 using namespace std;
 
 /*! \brief A clinician object represents a specific general practitioner, nurse, or counselor employeed

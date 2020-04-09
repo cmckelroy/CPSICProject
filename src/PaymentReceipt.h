@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 using namespace std;
 
 /*! \brief Receipt for payment issued.
@@ -8,10 +8,13 @@ using namespace std;
   */
 class PaymentReceipt
 {
+	private:
+	
 	int TimeStamp;
 	double Amount;
 	string PaymentMethod;
-private:
+
+	public:
 	/**
 	This function prints the values of its three variables.
 	*/
