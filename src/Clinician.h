@@ -22,8 +22,6 @@ public:
 
 	@param end_date This is the last date in the range of dates that the clinician wants to see in the schedle.
 
-	@return 0
-
 	*/
 	void view_schedule(int start_date, int end_date);
 };

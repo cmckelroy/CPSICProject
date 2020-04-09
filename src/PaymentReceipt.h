@@ -14,8 +14,6 @@ class PaymentReceipt
 private:
 	/**
 	This function prints the values of its three variables.
-
-	@return 0
 	*/
 	void print();
 };

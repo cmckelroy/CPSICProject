@@ -13,7 +13,6 @@ public:
 
 	@param clinician_name The name of the clinician whose schedule we want to print.
 
-	@return 0
 	*/
 	void print(string clinician_name);
 };

@@ -30,7 +30,6 @@ public:
 
 	@param amount This is the amount the patient wants to pay towards their bill.
 
-	@return 0
 	*/
 	void make_payment(string payment_type, int payment_card_number, int amount);
 
@@ -43,7 +42,6 @@ public:
 
 	@param absolute_time_range This is the 30-minute time slot between 10:00 and 4:00 that the appointment was scheduled for.
 
-	@return 0
 
 	*/
 	void cancel_appointment(int date, AbsoluteTimeRange absolute_time_range);

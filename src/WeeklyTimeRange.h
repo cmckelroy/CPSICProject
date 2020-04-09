@@ -22,15 +22,14 @@ public:
 	/**
 	This function prints a weekly time range.
 
-	@return 0
 	*/
 	void print();
 	/**
-	This function creates an AbsoluteTimeRange corresponding to this time range for a given week.
+	This function converts the relative information contained by this object into absolute terms
 
 	@param relative_to timestamp of 12:00 AM on Sunday on that week.
 
-	@return 0
+	@return an AbsoluteTimeRange corresponding to this time range for a given week.
 	*/
 	AbsoluteTimeRange to_absolute(int relative_to);
 };

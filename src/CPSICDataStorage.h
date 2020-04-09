@@ -9,14 +9,11 @@ class CPSICDataStorage
 public:
 	/**
 	This function saves data in a persistant fashion.
-
-	@return 0
 	*/
 	virtual void store();
+
     /**
 	This function retrieves data from persistant storage.
-
-	@return 0
 	*/
 	virtual void retrieve();
 

@@ -17,7 +17,6 @@ public:
 	/**
 	This function prints an appointment.
 
-	@return 0
 	*/
 	void print_appointment();
 };

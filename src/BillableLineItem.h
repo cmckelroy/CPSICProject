@@ -17,9 +17,7 @@ private:
 	double Total_cost;
 public:
 	/**
-	This function prints the values of it's three variables.
-
-	@return 0
+	This function prints the values of its three variables.
 	*/
 	void print();
 };

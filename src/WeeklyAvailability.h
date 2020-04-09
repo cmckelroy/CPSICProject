@@ -13,8 +13,17 @@ private:
 public:
 	/**
 	This function prints a WeeklyAvailability object.
-
-	@return 0
 	*/
 	void print();
+
+	/**
+	 * adds a WeeklyTimeRange object to the collection, checking for overlap in the process
+	 */
+	void add(WeeklyTimeRange wtr);
+
+	/**
+	 * removes the period of time represented by this range from the currently stored availability
+	 */
+	void remove(WeeklyTimeRange wtr);
+
 };

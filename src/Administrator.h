@@ -23,7 +23,6 @@ public:
 
 	@param email_addresses This array stores the email addresses of all the email recipients of the message.
 
-	@return 0;
 
 	*/
 	void generate_campus_alert(string message, string url, string email_addresses[]);
@@ -35,7 +34,6 @@ public:
 	@param report_type The report_type refers to whether the the administrator wants a total income report,
 	or a report of the income brought in just from counseling or just from medical
 
-	@return 0
 
 	*/
 	void display_income_report(int report_type);
@@ -49,7 +47,6 @@ public:
 
 	@param end_date This is the last date in the range of dates that the administrator wants to view.
 
-	@return 0
 	*/
 	void view_schedule(string name, int start_date, int end_date);
 
@@ -62,7 +59,6 @@ public:
 
 	@param clinician_ID This is the KSU flashline ID for the clinician.
 
-	@return 0
 
 	*/
 	void cancel_appointment(int date, AbsoluteTimeRange absolute_time_range, int clinician_ID);
@@ -90,7 +86,6 @@ public:
 
 	@param is_student This variable tells us how much to charge the patient, because students and non-students are charged differently.
 
-	@return 0
 	*/
 	void create_bill(BillableLineItem items[], bool is_student);
 };

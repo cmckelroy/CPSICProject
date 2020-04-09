@@ -20,7 +20,6 @@ public:
 
 	@param last_timestamp This is the timestamp that marks the end of the absolute time range.
 
-	@return 0
 	*/
 	void print(int first_timestamp, int last_timestamp);
 };
