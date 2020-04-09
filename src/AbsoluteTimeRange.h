@@ -10,8 +10,8 @@
 class AbsoluteTimeRange
 {
 private:
-	int startTime;//timestamp
-	int endTime;//timestamp
+	int startTime;   //timestamp
+	int endTime;     //timestamp
 public:
 	/**
 	This function simply prints an absolute time range.
