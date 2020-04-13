@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 using namespace std;
 
 /*! \brief This abstract class represents a to-be-implemented persistant data storage class for the CPSIC.

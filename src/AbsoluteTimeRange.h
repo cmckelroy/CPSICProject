@@ -21,5 +21,5 @@ public:
 	@param last_timestamp This is the timestamp that marks the end of the absolute time range.
 
 	*/
-	void print(int first_timestamp, int last_timestamp);
+	void print(int firstTimestamp, int lastTimestamp);
 };

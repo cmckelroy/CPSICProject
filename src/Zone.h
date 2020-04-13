@@ -12,9 +12,9 @@ class Zone
 {
 protected:
 	string name;//the name of the zone (i.e. "UnitedStates")
-	Zone * parent_zone;//This is the name of the parent zone, if there is one.
-	int num_of_cases;//number of cases of coronavirus in that zone
-	bool generates_campus_alert;//true or false
+	Zone * parentZone;//This is the name of the parent zone, if there is one.
+	int numOfCases;//number of cases of coronavirus in that zone
+	bool generatesCampusAlert;//true or false
 public:
 	/**
 	This function fetches the number of cases of coronavirus from a government website.

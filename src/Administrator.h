@@ -1,6 +1,8 @@
 #pragma once
 #include "CPSICUser.h"
 #include "BillableLineItem.h"
+#include <string>
+#include <vector>
 /*! \brief An administrator is someone who works for KSU and is allowed access to coronavirus related
  *   records.
  *
@@ -12,7 +14,7 @@
 class Administrator : public CPSICUser
 {
 private:
-	string Role;
+	string role;
 public:
 	/**
 	This function allows an administrator to generate a campus alert by typing a message.
@@ -25,7 +27,7 @@ public:
 
 
 	*/
-	void generate_campus_alert(string message, string url, string email_addresses[]);
+	void generate_campus_alert(string message, string url, vector<string> emailAddresses]);
 
 	/**
 	This function prints the desired income report. An administrator may view total income reports or
@@ -36,7 +38,7 @@ public:
 
 
 	*/
-	void display_income_report(int report_type);
+	void display_income_report(int reportType);
 
 	/**
 	This function prints a clinician's schedule.
@@ -48,7 +50,7 @@ public:
 	@param end_date This is the last date in the range of dates that the administrator wants to view.
 
 	*/
-	void view_schedule(string name, int start_date, int end_date);
+	void view_schedule(string name, int startDate, int endDate);
 
 	/**
 	This function cancels an appointment.
@@ -61,7 +63,7 @@ public:
 
 
 	*/
-	void cancel_appointment(int date, AbsoluteTimeRange absolute_time_range, int clinician_ID);
+	void cancel_appointment(int date, AbsoluteTimeRange time, int clinicianID);
 
 	/**
 	This function automatically cancels a previous appointment, and schedules a new appointment.
@@ -77,7 +79,7 @@ public:
 	@return Appointment;
 
 	*/
-	Appointment reschedule_appointment(int new_appointment_date, AbsoluteTimeRange time, int patient_ID, int clinician_ID);
+	Appointment reschedule_appointment(int newAppointmentDate, AbsoluteTimeRange time, int patientID, int clinicianID);
 
 	/**
 	This function creates a bill, that consists of BillableLineItems.
@@ -87,5 +89,5 @@ public:
 	@param is_student This variable tells us how much to charge the patient, because students and non-students are charged differently.
 
 	*/
-	void create_bill(BillableLineItem items[], bool is_student);
+	void create_bill(vector<BillableLineItem lineItems, bool isStudent);
 };

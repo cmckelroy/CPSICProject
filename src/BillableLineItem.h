@@ -1,5 +1,5 @@
 #pragma once
-#include<string>
+#include <string>
 using namespace std;
 
 /*! \brief A BillableLineItem object is created when a student makes a visit to the KSU health facilities
@@ -12,9 +12,9 @@ using namespace std;
 class BillableLineItem
 {
 private:
-	int Timestamp;
-	string DescriptionOfServices;
-	double Total_cost;
+	int timestamp;
+	string descriptionOfServices;
+	double totalCost;
 public:
 	/**
 	This function prints the values of its three variables.

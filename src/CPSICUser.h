@@ -7,9 +7,9 @@ using namespace std;
  */
 class CPSICUser {
 protected:
-	int KSU_ID;         //unique for each Clinitian, Patient, and Administrator
-	string FirstName;
-	string LastName;
+	int KSUID;         //unique for each Clinician, Patient, and Administrator
+	string firstName;
+	string lastName;
 public:
 	/**
 	This function creates an appointment
@@ -25,7 +25,7 @@ public:
 	@return It returns the created appointment.
 
 	*/
-	Appointment create_appointment(AbsoluteTimeRange absolute_time_range, int date, string patient_ID, string clinician_ID);
+	Appointment create_appointment(AbsoluteTimeRange appointmentTime, int appointmentDate, string patientID, string clinicianID);
 
 	/**
 	This function prints the appointment information.
@@ -39,7 +39,7 @@ public:
 	@param clinician_ID This is the clinician's KSU ID.
 
 	*/
-	void view_appointment(int absolute_time_range, int date, int patient_ID, int clinician_ID);
+	void view_appointment(int appointmentTime, int date, int patientID, int clinicianID);
 
 	/**
 	This function prints coronavirus data for a given region.

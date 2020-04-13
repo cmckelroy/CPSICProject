@@ -31,5 +31,5 @@ public:
 
 	@return an AbsoluteTimeRange corresponding to this time range for a given week.
 	*/
-	AbsoluteTimeRange to_absolute(int relative_to);
+	AbsoluteTimeRange to_absolute(int relativeTo);
 };

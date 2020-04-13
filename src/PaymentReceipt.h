@@ -10,9 +10,9 @@ class PaymentReceipt
 {
 	private:
 	
-	int TimeStamp;
-	double Amount;
-	string PaymentMethod;
+	int timestamp;
+	double amount;
+	string paymentMethod;
 
 	public:
 	/**

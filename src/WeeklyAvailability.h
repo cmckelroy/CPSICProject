@@ -1,5 +1,6 @@
 #pragma once
 #include "WeeklyTimeRange.h"
+#include <vector>
 /*! \brief A WeeklyAvailability object represents all periods of time during an arbitrary during which a
  *   clinician is available to provide services by default.
  */
@@ -9,7 +10,7 @@
 class WeeklyAvailability
 {
 private:
-	WeeklyTimeRange wtr[];
+	std::vector<WeeklyTimeRange> ranges;
 public:
 	/**
 	This function prints a WeeklyAvailability object.

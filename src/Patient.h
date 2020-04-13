@@ -13,14 +13,14 @@
 class Patient : public CPSICUser
 {
 private:
-	bool IsStudent;
-	bool IsStaff;
-	string Health_records;
+	bool isStudent;
+	bool isStaff;
+	vector<string> healthRecords;
 	double balance;
 	std::vector<PaymentReceipt> receipts;
-	bool HasShownFluSymptoms;
-	bool IsInfected;
-	bool HasSoughtCounseling;
+	bool hasShownFluSymptoms;
+	bool isInfected;
+	bool hasSoughtCounseling;
 public:
 	/**
 	Allows the user to make a payment
@@ -32,7 +32,7 @@ public:
 	@param amount This is the amount the patient wants to pay towards their bill.
 
 	*/
-	void make_payment(string payment_type, int payment_card_number, double amount);
+	void make_payment(string paymentType, int paymentCardNumber, double amount);
 
 	/**
 	This function cancels an appointment. It doesn't require a clinician_ID like the cancel_appointment() function
@@ -45,7 +45,7 @@ public:
 
 
 	*/
-	void cancel_appointment(int date, AbsoluteTimeRange absolute_time_range);
+	void cancel_appointment(int date, AbsoluteTimeRange time);
 
 	/**
 	This function cancels an appointment and creates a new one.
@@ -55,5 +55,5 @@ public:
 	@param time This is the 30-minute time slot from 10:00 to 4:00 when the appointment will be held.
 
 	*/
-	void reschedule_appointment(int new_appointment_date, AbsoluteTimeRange time);
+	void reschedule_appointment(int newAppointmentDate, AbsoluteTimeRange time);
 };
