@@ -8,12 +8,13 @@ class CPSICDataStorage
 {
 public:
 	/**
-	This function saves data in a persistant fashion.
+	This method saves data in a persistant fashion. This function should be overloaded to accept any of our storable data types
 	*/
 	virtual void store();
 
     /**
-	This function retrieves data from persistant storage.
+	This method retrieves data from persistant storage. Different versions of this function should be created for each of
+	our storable data types.
 	*/
 	virtual void retrieve();
 

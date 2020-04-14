@@ -1,6 +1,7 @@
 #pragma once
 #include "CPSICUser.h"
 #include "BillableLineItem.h"
+#include "PaymentReceipt.h"
 #include <string>
 #include <vector>
 /*! \brief An administrator is someone who works for KSU and is allowed access to coronavirus related
@@ -14,7 +15,7 @@
 class Administrator : public CPSICUser
 {
 private:
-	string role;
+	string role;  ///< this could also be an enum containing one of a set of specific possible roles
 public:
 	/**
 	This function allows an administrator to generate a campus alert by typing a message.
@@ -27,7 +28,7 @@ public:
 
 
 	*/
-	void generate_campus_alert(string message, string url, vector<string> emailAddresses]);
+	void generate_campus_alert(string message, string url, vector<string> emailAddresses);
 
 	/**
 	This function prints the desired income report. An administrator may view total income reports or
@@ -36,50 +37,8 @@ public:
 	@param report_type The report_type refers to whether the the administrator wants a total income report,
 	or a report of the income brought in just from counseling or just from medical
 
-
 	*/
-	void display_income_report(int reportType);
-
-	/**
-	This function prints a clinician's schedule.
-
-	@param name The name of the physician or psychiatrist whose schedule the administrator wishes to view.
-
-	@param start_date This is the first date in the range of dates that the administrator wants to view.
-
-	@param end_date This is the last date in the range of dates that the administrator wants to view.
-
-	*/
-	void view_schedule(string name, int startDate, int endDate);
-
-	/**
-	This function cancels an appointment.
-
-	@param date The date of the appointment
-
-	@param absolute_time_range This is the 30-minute time slot between 10:00 and 4:00 that the appointment was scheduled for.
-
-	@param clinician_ID This is the KSU flashline ID for the clinician.
-
-
-	*/
-	void cancel_appointment(int date, AbsoluteTimeRange time, int clinicianID);
-
-	/**
-	This function automatically cancels a previous appointment, and schedules a new appointment.
-
-	@param new_appointment_date This is the date we want the new appointment to be at.
-
-	@param time This is the timeslot from 10:00 to 4:00 when we want the new appointment to be.
-
-	@param patient_ID This is the patient's KSU Flashline ID.
-
-	@param clinician_ID This is the clinician's KSU Flashline ID.
-
-	@return Appointment;
-
-	*/
-	Appointment reschedule_appointment(int newAppointmentDate, AbsoluteTimeRange time, int patientID, int clinicianID);
+	vector<PaymentReceipt> create_income_report(int reportType);
 
 	/**
 	This function creates a bill, that consists of BillableLineItems.
@@ -89,5 +48,6 @@ public:
 	@param is_student This variable tells us how much to charge the patient, because students and non-students are charged differently.
 
 	*/
-	void create_bill(vector<BillableLineItem lineItems, bool isStudent);
+	void create_bill(vector<BillableLineItem> lineItems, bool isStudent);
+
 };

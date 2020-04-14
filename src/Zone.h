@@ -11,15 +11,14 @@ using namespace std;
 class Zone
 {
 protected:
-	string name;//the name of the zone (i.e. "UnitedStates")
-	Zone * parentZone;//This is the name of the parent zone, if there is one.
-	int numOfCases;//number of cases of coronavirus in that zone
-	bool generatesCampusAlert;//true or false
+	string name;  ///< the name of the zone (i.e. "United States")
+	Zone * parentZone;  //< pointer to the parent zone, if there is one.
+	int numOfCases;  //< number of cases of coronavirus in that zone
+	bool generatesCampusAlert;
 public:
 	/**
-	This function fetches the number of cases of coronavirus from a government website.
 
 	@return Returns the number of coronavirus cases in that zone.
 	*/
-	int retrieve_num_of_cases();//This function retrieves the number of cases of coronavirus in that particular zone.
+	int retrieve_num_of_cases();
 };

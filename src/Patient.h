@@ -1,7 +1,10 @@
 #pragma once
-#include "PaymentReceipt.h"
 #include "CPSICUser.h"
+#include "PaymentReceipt.h"
 #include "AbsoluteTimeRange.h"
+#include "BillableLineItem.h"
+#include "Appointment.h"
+#include "Clinician.h"
 #include <vector>
 
 /*! \brief A patient is a KSU student or staff member who has sought care from the medical department.
@@ -16,8 +19,8 @@ private:
 	bool isStudent;
 	bool isStaff;
 	vector<string> healthRecords;
-	double balance;
-	std::vector<PaymentReceipt> receipts;
+	vector<BillableLineItem> bill;
+	vector<PaymentReceipt> receipts;
 	bool hasShownFluSymptoms;
 	bool isInfected;
 	bool hasSoughtCounseling;
@@ -35,25 +38,16 @@ public:
 	void make_payment(string paymentType, int paymentCardNumber, double amount);
 
 	/**
-	This function cancels an appointment. It doesn't require a clinician_ID like the cancel_appointment() function
-	in the administrator class because a patient can not have two appointments with two different clinicians at
-	the same time.
-
-	@param date The date of the appointment
-
-	@param absolute_time_range This is the 30-minute time slot between 10:00 and 4:00 that the appointment was scheduled for.
-
-
+	This function creates an appointment for a specific clinician for a specific timeslot.
+	@param clinician The clinician
+	@param timeslot The timeslot
 	*/
-	void cancel_appointment(int date, AbsoluteTimeRange time);
+
+	Appointment create_appointment(Clinician clinician, AbsoluteTimeRange timeslot);
 
 	/**
-	This function cancels an appointment and creates a new one.
-
-	@param new_appointment_date This is the date of the new appointment the patient is trying to create.
-
-	@param time This is the 30-minute time slot from 10:00 to 4:00 when the appointment will be held.
-
+	This function determines the user's balance from their outstanding bills.
 	*/
-	void reschedule_appointment(int newAppointmentDate, AbsoluteTimeRange time);
+
+	double get_balance();
 };

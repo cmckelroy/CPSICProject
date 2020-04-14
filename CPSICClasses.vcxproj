@@ -113,6 +113,20 @@
     <ClInclude Include="src\WeeklyTimeRange.h" />
     <ClInclude Include="src\Zone.h" />
   </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\AbsoluteTimeRange.cpp" />
+    <ClCompile Include="src\Administrator.cpp" />
+    <ClCompile Include="src\Appointment.cpp" />
+    <ClCompile Include="src\BillableLineItem.cpp" />
+    <ClCompile Include="src\Clinician.cpp" />
+    <ClCompile Include="src\CPSICUser.cpp" />
+    <ClCompile Include="src\Patient.cpp" />
+    <ClCompile Include="src\PaymentReceipt.cpp" />
+    <ClCompile Include="src\Schedule.cpp" />
+    <ClCompile Include="src\WeeklyAvailability.cpp" />
+    <ClCompile Include="src\WeeklyTimeRange.cpp" />
+    <ClCompile Include="src\Zone.cpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

@@ -16,6 +16,7 @@ private:
 	time_t timestamp;
 	string descriptionOfServices;
 	double totalCost;
+	bool paid;
 public:
 	/**
 	This function prints the values of its three variables.

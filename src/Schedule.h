@@ -10,10 +10,8 @@ private:
 	std::vector<Appointment> appointments;
 public:
 	/**
-	This function prints a clinician's schedule.
-
-	@param clinician_name The name of the clinician whose schedule we want to print.
-
+	This function prints this schedule.
+	
 	*/
-	void print(string clinician_name);
+	void print();
 };

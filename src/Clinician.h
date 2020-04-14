@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Schedule.h"
 using namespace std;
 
 /*! \brief A clinician object represents a specific general practitioner, nurse, or counselor employeed
@@ -13,15 +14,15 @@ using namespace std;
 class Clinician : public CPSICUser
 {
 private:
-	string title;
+	string jobTitle;
 public:
 	/**
 	This function allows a clinician to view their schedule.
 	
-	@param start_date This is the first date in the range of dates that the clinician wants to see in the schedule.
+	@param start This is the timestamp of the beginning of the schedule.
 
-	@param end_date This is the last date in the range of dates that the clinician wants to see in the schedle.
+	@param end_date This is the timestamp of the end.
 
 	*/
-	void view_schedule(int startDate, int endDate);
+	Schedule view_schedule(time_t start, time_t end);
 };

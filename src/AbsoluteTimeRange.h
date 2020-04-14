@@ -17,4 +17,9 @@ public:
 	This function simply prints this absolute time range.
 	*/
 	void print();
+
+	/**
+	This operator will check if two ATRs are equal or not
+	*/
+	bool operator ==(AbsoluteTimeRange& rhs);
 };

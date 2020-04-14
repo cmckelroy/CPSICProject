@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <chrono>
 #include "AbsoluteTimeRange.h"
 using namespace std;
 
@@ -15,11 +16,11 @@ class WeeklyTimeRange
 {
 private:
 	weekday startDay;
-	int startHour;      // an hour value between 0 and 23 for the start
-	int startMinute;    // minute values can be 0-59
+	int startHour;  ///< an hour value between 0 and 23 for the start
+	int startMinute;  ///< minute values can be 0-59
 	weekday endDay;
 	int endHour;
-	int endDay;
+	int endMinute;
 public:
 	/**
 	This function prints a weekly time range.
@@ -33,5 +34,5 @@ public:
 
 	@return an AbsoluteTimeRange corresponding to this time range for a given week.
 	*/
-	AbsoluteTimeRange to_absolute(int relativeTo);
+	AbsoluteTimeRange to_absolute(time_t relativeTo);
 };
