@@ -1,0 +1,20 @@
+<html>
+<head>
+    <title>web server demo</title>
+    <script>
+        function loadBill(){
+            fetch('/bill').then(r=>r.json().then(bill => {
+                console.log(bill);
+                const location = document.querySelector('#billLocation');
+                location.innerHTML += "amount: $"+bill.amount + "<br>";
+                location.innerHTML += "payment method: " + bill.paymentMethod + "<br>";
+                location.innerHTML += "payment time: " + (new Date(bill.time*1000)).toLocaleString();
+            }))
+        }
+    </script>
+</head>
+<body>
+    <button onclick="loadBill();">clicky clicky</button>
+    <div id="billLocation"></div>
+</body>
+</html>
