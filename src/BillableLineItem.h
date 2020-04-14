@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <chrono>
 using namespace std;
 
 /*! \brief A BillableLineItem object is created when a student makes a visit to the KSU health facilities
@@ -12,7 +13,7 @@ using namespace std;
 class BillableLineItem
 {
 private:
-	int timestamp;
+	time_t timestamp;
 	string descriptionOfServices;
 	double totalCost;
 public:

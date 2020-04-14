@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <chrono>
 using namespace std;
 
 /*! \brief Receipt for payment issued.
@@ -10,7 +11,7 @@ class PaymentReceipt
 {
 	private:
 	
-	int timestamp;
+	time_t timestamp;
 	double amount;
 	string paymentMethod;
 

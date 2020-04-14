@@ -7,7 +7,7 @@
 class Schedule
 {
 private:
-	std::vector <Appointment> appointments;
+	std::vector<Appointment> appointments;
 public:
 	/**
 	This function prints a clinician's schedule.

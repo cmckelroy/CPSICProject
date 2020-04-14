@@ -3,6 +3,8 @@
 #include "AbsoluteTimeRange.h"
 using namespace std;
 
+enum weekday {Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday};
+
 /*! \brief This object represents a period of time within an arbitrary week.
   *
   *  This class can be used to produce an AbsoluteTimeRange object given a specific week of the year.
@@ -12,12 +14,12 @@ using namespace std;
 class WeeklyTimeRange
 {
 private:
-	int startDay;       // 0 = Sunday, 6 = Saturday
+	weekday startDay;
 	int startHour;      // an hour value between 0 and 23 for the start
 	int startMinute;    // minute values can be 0-59
-	int endDay;         // ditto
-	int endHour;        // ditto
-	int endDay;         // ditto
+	weekday endDay;
+	int endHour;
+	int endDay;
 public:
 	/**
 	This function prints a weekly time range.
