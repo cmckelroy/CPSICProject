@@ -12,9 +12,9 @@ int main()
 
     // Create sample payment receipt:
     time_t now = time(nullptr);  // get current time
-    PaymentReceipt asdf = PaymentReceipt(now, 35.01, "american express");
-    nlohmann::json asdfj = asdf.to_json();
-    std::cout << "Bill data: " + asdfj.dump() << "\n";
+    PaymentReceipt sampleReciept = PaymentReceipt(now, 35.01, "american express");
+    nlohmann::json sampleRecieptJSON = sampleReciept.to_json();
+    std::cout << "Serialized reciept data: " + sampleRecieptJSON.dump() << "\n";
 
     // Set up sever
     httplib::Server svr;
@@ -25,9 +25,9 @@ int main()
     }
 
     // Tell server to respond to requests for the /bill url with the JSON data of our sample bill
-    svr.Get("/bill", [asdfj](const httplib::Request& req, httplib::Response& res) {
-        std::cout << "received request for bill\n";
-        res.set_content(asdfj.dump(), "application/json");
+    svr.Get("/reciept", [sampleRecieptJSON](const httplib::Request& req, httplib::Response& res) {
+        std::cout << "received request for reciept\n";
+        res.set_content(sampleRecieptJSON.dump(), "application/json");
     });
 
     // Start server; tell it to listen for any connection on port 1111 (http://localhost:1111 should work locally)
