@@ -27,7 +27,8 @@ Documentation for the HTTP server library: https://github.com/yhirose/cpp-httpli
 
 Documentation for the JSON library: https://github.com/nlohmann/json
 
-Documentation for the MySQL connection library: coming soon??
+Documentation for the MySQL connection library: https://dev.mysql.com/doc/connector-cpp/8.0/en/connector-cpp-introduction.html
+Github repository for MySQL Connector C++: https://github.com/mysql/mysql-connector-cpp
 
 ## Design documentation:
 [Latest turned-in version of the SRS](https://drive.google.com/open?id=1tIDo6EWX_xK_nB-DwEnfQgoEU8oRWzPt3jOAZyB4Jg0)
