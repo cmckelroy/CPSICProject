@@ -64,7 +64,7 @@ public:
 	/**
 	Deletes an appointment from the database (i imagine this will just use the appointmentID primary key attribute)
 	*/
-	virtual void deleteAppoinment(Appointment a);
+	virtual void deleteAppointment(Appointment a);
 
 	/**
 	Updates the details of a patient in the database by changing whether they've been diagnosed or whether they've sought
@@ -72,7 +72,7 @@ public:
 	*/
 	virtual void updatePatient(Patient p);
 	/**
-	Updates a clinician's details. (I imagine this will mostly be used to change availability
+	Updates a clinician's details. (I imagine this will mostly be used to change availability)
 	*/
 	virtual void updateClinician(Clinician c);
 	
