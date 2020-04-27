@@ -11,7 +11,7 @@
 using namespace std;
 using namespace ::mysqlx;
 
-/*! \brief This abstract class represents a to-be-implemented persistant data storage class for the CPSIC.
+/*! \brief This abstract class represents a to-be-implemented persistent data storage class for the CPSIC.
   */
 class CPSICDataStorage
 {
