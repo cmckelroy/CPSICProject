@@ -12,4 +12,5 @@ protected:
 	string lastName;
 public:
 	CPSICUser();
+	string get_name();
 };

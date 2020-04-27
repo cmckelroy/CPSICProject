@@ -14,6 +14,8 @@ private:
 	time_t startTime;   //timestamp
 	time_t endTime;     //timestamp
 public:
+	//constructor
+	AbsoluteTimeRange(time_t s, time_t e);
 	/**
 	This function simply prints this absolute time range.
 	*/
@@ -23,4 +25,12 @@ public:
 	This operator will check if two ATRs are equal or not
 	*/
 	bool operator ==(AbsoluteTimeRange& rhs);
+
+	//accessor function to retrieve startTime
+	time_t get_start();
+	//accesor function to retrieve endTime
+	time_t get_end();
+
+	//set function
+	void set_new(time_t s, time_t e);
 };
