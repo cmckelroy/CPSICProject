@@ -18,6 +18,7 @@ private:
 	double totalCost;
 	bool paid;
 public:
+	BillableLineItem(time_t time, string services, double cost, bool paid);
 	/**
 	This function prints the values of its three variables.
 	*/
