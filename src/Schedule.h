@@ -9,9 +9,12 @@ class Schedule
 private:
 	std::vector<Appointment> appointments;
 public:
+	Schedule();
 	/**
 	This function prints this schedule.
 	
 	*/
 	void print();
+	void add_appointment(Appointment app);
+	void remove_appointment();
 };
