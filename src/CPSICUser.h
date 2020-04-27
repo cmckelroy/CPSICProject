@@ -7,6 +7,7 @@ using namespace std;
 class CPSICUser {
 protected:
 	int KSUID;         ///<unique for each Clinician, Patient, and Administrator
+	string password;
 	string firstName;
 	string lastName;
 public:

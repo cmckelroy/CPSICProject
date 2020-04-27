@@ -12,7 +12,8 @@ using namespace std;
 class Appointment
 {
 private:
-	AbsoluteTimeRange time;//an object of the class AbsoluteTimeRange
+	int appointmentID; ///< primary key of the appointment in the database
+	AbsoluteTimeRange time;
 	Patient &patient;
 	Clinician &clinician;
 public:
