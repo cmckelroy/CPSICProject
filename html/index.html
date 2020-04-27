@@ -1,22 +1,171 @@
 <html>
 <head>
-    <title>web server demo</title>
-    <script>
-        function loadReciept(){
-            fetch('/reciept').then(r=>r.json().then(reciept => {
-                console.log(reciept);
-                const location = document.querySelector('#recieptLocation');
-                const recieptP = document.createElement('p');
-                recieptP.innerHTML += "amount: $"+reciept.amount + "<br>";
-                recieptP.innerHTML += "payment method: " + reciept.paymentMethod + "<br>";
-                recieptP.innerHTML += "payment time: " + (new Date(reciept.time*1000)).toLocaleString();
-                location.appendChild(recieptP);
-            }))
+    <title>CPSIC thing</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        a {
+            display: block;
+            color: blue;
         }
-    </script>
+        a.visited {
+            color: blue;
+        }
+        .calendarRow {
+            display: flex;
+        }
+        .calendarDay {
+            width:75px;
+            height:75px;
+            border:2px solid red;
+        }
+        form > *{
+            margin: 5px 0px 5px 0px;
+        }
+    </style>
 </head>
 <body>
-    <button onclick="loadReciept();">load sample reciept</button>
-    <div id="recieptLocation"></div>
+    <div id="root">
+        <a v-on:click.prevent="returnToMenu" v-if="currentPage!='menu' && currentPage!='login'">Return to menu</a>
+        <div id="loginForm" v-if="currentPage=='login'">
+            <p>Login:</p>
+            <form>
+                <label for="username">KSU ID: </label><input type="text" v-model="usernameInput" id="username" />
+                <br />
+                <label for="password">password: </label><input type="password" v-model="passwordInput" id="password" />
+                <br />
+                <button v-on:click.prevent="login">go</button>
+            </form>
+        </div>
+        <div id="patientMenu" v-else-if="currentPage=='menu' && user.role=='patient'">
+            <p>Welcome, {{user.name}}</p>
+            <a v-on:click.prevent="toCalendar">View Your Appointment(s)</a>
+            <a href>View Bills and Payments</a>
+        </div>
+        <div id="adminMenu" v-else-if="currentPage=='menu' && user.role=='administrator'">
+            <p>Welcome, {{user.name}}</p>
+            <a v-on:click.prevent="toCalendar">View Calendar</a>
+            <a href>View Bills and Payments</a>
+            <a href>View Stats</a>
+        </div>
+        <div v-else-if="currentPage=='calendar'">
+            <p>{{new Date().toLocaleString('default', { month: 'long' })}}</p>
+            <div class="calendarRow" v-for="week in calDays">
+                <div class="calendarDay" v-for="day in week">
+                    <div v-on:click="viewDay(day);">
+                        {{day}} {{getAppointmentCountString(day)}}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div v-else-if="currentPage=='singleday'">
+            <a v-on:click.prevent="toCalendar">Return to calendar</a>
+            <div v-for="app in appointments[calDate]">
+                Patient: {{app.patient}}<br />
+                Clinician: {{app.clinician}}<br />
+                Time slot: {{new Date(app.timeSlot).toLocaleTimeString()}} - {{new Date(app.timeSlot+(30*60*1000)).toLocaleTimeString()}}<br /><br />
+            </div>
+        </div>
+        <a href v-on:click.prevent="logout" v-if="currentPage!='login'">Log Out</a>
+    </div>
+    <script>
+        async function fetchJSON(url){
+            let resp = await fetch(url);
+            return await resp.json();
+        }
+        function calendarMath(month){
+            const calDays = Array(35).fill("");
+            const today = new Date();
+            today.setMonth(month);
+            today.setDate(1);
+            const firstWeekday = today.getDay();
+            today.setDate(0);
+            const lastDay = today.getDate();
+            for(let i=firstWeekday; i < firstWeekday+lastDay;i++){
+                calDays[i] = i-firstWeekday+1;
+            }
+            return [calDays.slice(0,7),calDays.slice(7,14),calDays.slice(14,21),calDays.slice(21,28),calDays.slice(28,35)];
+        }
+        let cpsic = new Vue({
+            el: "#root",
+            data: {
+                usernameInput: "",
+                passwordInput: "",
+                currentPage: "login",
+                user: {},
+                calDays: calendarMath(new Date().getMonth()),
+                calMonth: new Date().getMonth(),
+                calDate: 0,
+                appointments: []
+            },
+            mounted: async function(){
+                let userInit = await fetchJSON('/userinfo');
+                if(userInit.error){
+                    console.log("user not logged in");
+                }else{
+                    this.user = userInit;
+                    this.currentPage = "menu";
+                }
+            },
+            methods: {
+                login: function(){
+                    let username = this.usernameInput;
+                    let password = this.passwordInput;
+                    fetch('/login',{
+                        method: 'POST',
+                        body: JSON.stringify({username,password})
+                    }).then(r=>r.json().then(async j=>{
+                        console.log(j);
+                        if(j.result=="success"){
+                            this.user = await fetchJSON("/userinfo");
+                            this.currentPage = "menu";
+                            this.usernameInput = this.passwordInput = "";
+                        }else{
+                            window.alert("That username and password combination doesn't ring a bell - sorry")
+                            this.passwordInput = "";
+                        }
+                    }));
+                },
+                logout: function(){
+                    fetch("/logout");
+                    window.location.reload();
+                },
+                returnToMenu: function(){
+                    this.currentPage = "menu";
+                },
+                toCalendar: async function(){
+                    this.currentPage = "calendar";
+                    const apps = await fetchJSON("/appointments");
+                    const day = new Date();
+                    day.setMonth(this.calMonth);
+                    day.setDate(0);
+                    this.appointments = [];
+                    for(let i=0; i<day.getDate();i++){
+                        this.appointments.push([]);
+                    }
+                    for(const a of apps){
+                        this.appointments[new Date(a.timeSlot).getDate()].push(a);
+                    }
+                },
+                getAppointmentCountString(date){
+                    if(this.appointments[date] && this.appointments[date].length){
+                        return "("+this.appointments[date].length+" app.)";
+                    }
+                    return "";
+                },
+                viewDay(day){
+                    if(day && this.appointments[day] && this.appointments[day].length){
+                        this.calDate = parseInt(day);
+                        this.currentPage = "singleday";
+                    }
+                },
+                getAllPatients(){
+                    return Array.from(new Set(this.appointments.map(a=>a.patient)));
+                },
+                getAllClinicians(){
+                    return Array.from(new Set(this.appointments.map(a=>a.clinicians)));
+                }
+            }
+        })
+    </script>
 </body>
 </html>
