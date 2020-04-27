@@ -16,6 +16,13 @@ private:
 	AbsoluteTimeRange time;
 	Patient &patient;
 	Clinician &clinician;
+
+	/**
+	This function prints a timestamp as a date
+	in the form "[WEEKDAY] [MONTH] [DAY], [YEAR] at [TIME] A.M./P.M."
+	*/
+	void timestamp_date(time_t timestamp);
+
 public:
 	Appointment(Patient &p, Clinician &c, AbsoluteTimeRange abs);
 
@@ -29,4 +36,16 @@ public:
 	This function cancels the appointment.
 	*/
 	void cancel();
+
+
+	//accessor functions
+
+	//accessor function for appointmentID
+	int get_id();
+	//accessor function for reference to patient
+	Patient & get_patient();
+	//accessor function for reference to clinician
+	Clinician & get_clinician();
+	//accessor function for time
+	AbsoluteTimeRange get_timeslot();
 };
