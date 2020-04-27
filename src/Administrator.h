@@ -4,6 +4,8 @@
 #include "PaymentReceipt.h"
 #include <string>
 #include <vector>
+
+
 /*! \brief An administrator is someone who works for KSU and is allowed access to coronavirus related
  *   records.
  *
@@ -15,7 +17,7 @@
 class Administrator : public CPSICUser
 {
 private:
-	string role;  ///< this could also be an enum containing one of a set of specific possible roles
+	std::string role;  ///< this could also be an enum containing one of a set of specific possible roles
 public:
 	/**
 	This function allows an administrator to generate a campus alert by typing a message.
@@ -26,10 +28,11 @@ public:
 
 	@param email_addresses This array stores the email addresses of all the email recipients of the message.
 
-
 	*/
-	void generate_campus_alert(string message, string url, vector<string> emailAddresses);
+	void generate_campus_alert(std::string message, std::string url, vector<std::string> emailAddresses);
+	Administrator();
 
+	Administrator(std::string aRole);
 	/**
 	This function prints the desired income report. An administrator may view total income reports or
 	individual income reports for counseling and medical attention.

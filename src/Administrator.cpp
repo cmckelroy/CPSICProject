@@ -12,3 +12,13 @@ vector<PaymentReceipt> Administrator::create_income_report(int reportType)
 void Administrator::create_bill(vector<BillableLineItem> lineItems, bool isStudent)
 {
 }
+
+Administrator::Administrator()
+{
+	role = "Ambiguous. Please set.";
+}
+
+Administrator::Administrator(std::string aRole)
+{
+	role = aRole;
+}

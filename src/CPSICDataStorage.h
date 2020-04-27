@@ -1,11 +1,18 @@
 #pragma once
 #include <string>
+#include "mysql.h"
+#include <mysqlx/xdevapi.h>
+#include <iostream>
+#include <cstdio>
+#include <chrono>
+#include <ctime>
 #include "Patient.h"
 #include "Administrator.h"
 #include "Clinician.h"
 #include "Zone.h"
 
 using namespace std;
+using namespace ::mysqlx;
 
 /*! \brief This abstract class represents a to-be-implemented persistant data storage class for the CPSIC.
   */
@@ -13,13 +20,13 @@ class CPSICDataStorage
 {
 public:
 	/** @name Information retrieval methods
-	 */
-	 ///@{
+	*/
+	///@{
 
 	virtual Patient retrieve_user_as_patient(int KSUID);
 	virtual Clinician retrieve_user_as_clinician(int KSUID);
 	virtual Administrator retrieve_user_as_administrator(int KSUID);
-	
+
 	/**
 	Creates a new active session for a user that just logged in with a particular KSU ID.
 	*/
@@ -40,7 +47,7 @@ public:
 	Retrieves all appointments that fall into a certain time range (for administrative purposes; this is
 	not meant to become public information
 	*/
-	virtual Schedule retreive_schedule(AbsoluteTimeRange abs);
+	virtual Schedule retrieve_schedule(AbsoluteTimeRange abs);
 
 	/**
 	Retrieves the single zone that has no "parent" zone and to which all others can trace a path to through parents
@@ -50,13 +57,13 @@ public:
 	/**
 	Retrieves a zone based on its name (which is its primary key)
 	*/
-	virtual Zone retrieve_zone(string name);
+	virtual Zone retrieve_zone(std::string name);
 
 	///@}
 
 	/** @name Information saving/updating methods
-	 */
-	 ///@{
+	*/
+	///@{
 
 	/**
 	Uses the appointment object to create a matching record in the database
@@ -65,7 +72,7 @@ public:
 	/**
 	Deletes an appointment from the database (i imagine this will just use the appointmentID primary key attribute)
 	*/
-	virtual void deleteAppointment(Appointment a);
+	virtual void deleteAppointment(int appID);
 
 	/**
 	Updates the details of a patient in the database by changing whether they've been diagnosed or whether they've sought
@@ -76,7 +83,7 @@ public:
 	Updates a clinician's details. (I imagine this will mostly be used to change availability)
 	*/
 	virtual void updateClinician(Clinician c);
-	
+
 	/**
 	Creates a record in the database for a PaymentReciept object
 	*/
