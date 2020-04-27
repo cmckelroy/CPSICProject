@@ -22,6 +22,7 @@ private:
 	int endHour;
 	int endMinute;
 public:
+	WeeklyTimeRange(weekday sd, int sh, int sm, weekday ed, int eh, int em);
 	/**
 	This function prints a weekly time range.
 
