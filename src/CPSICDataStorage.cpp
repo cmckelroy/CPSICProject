@@ -1,5 +1,6 @@
 #include "CPSICDataStorage.h"
 
+/*
 Patient CPSICDataStorage::retrieve_user_as_patient(int KSUID)
 {
 	Session sess("localhost", 33060, "root", "t2]%j!muWbNb[d`a");
@@ -118,22 +119,26 @@ Schedule CPSICDataStorage::retrieve_schedule(AbsoluteTimeRange abs)
 
 	Schema db = sess.getSchema("cpsic");
 }
+*/
 
 Zone CPSICDataStorage::retrieve_largest_zone()
 {
-	Session sess("localhost", 33060, "root", "t2]%j!muWbNb[d`a");
+	Session sess("localhost", 33060, "root", "password");
 
 	Schema db = sess.getSchema("cpsic");
 
 	Table z = db.getTable("zone");
-	RowResult aResult = z.select("ZoneName" , "NumOfCases", "WillRaiseAlert", "ParentZone").where("ParentZone = null").execute();
-
+	RowResult aResult = z.select("ZoneName", "NumOfCases", "WillRaiseAlert", "ParentZone").where("ParentZone IS NULL").execute();
+	cout << "fetched " << aResult.count() << " rows" << endl;
 	Row row = aResult.fetchOne();
-	cout << "Largest zone:                       " << row[0] << endl;
-	cout << "Number of cases:                    " << row[1] << endl;
-	cout << "Will raise alert (1 = yes, 0 = no): " << row[2] << endl;
+	cout << "Largest zone:                       " << (std::string)row[0] << endl;
+	cout << "Number of cases:                    " << (int)row[1] << endl;
+	cout << "Will raise alert (1 = yes, 0 = no): " << (bool)row[2] << endl;
+
+	return Zone();
 }
 
+/*
 Zone CPSICDataStorage::retrieve_zone(std::string name)
 {
 	Session sess("localhost", 33060, "root", "t2]%j!muWbNb[d`a");
@@ -192,4 +197,4 @@ void CPSICDataStorage::savePayment(PaymentReceipt pr)
 	Schema db = sess.getSchema("cpsic");
 
 	Table sp = db.getTable("paymentreceipt");
-}
+}*/
