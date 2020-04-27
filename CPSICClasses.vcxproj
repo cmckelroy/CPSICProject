@@ -109,10 +109,11 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>C:\Program Files\MySQL\Connector C++ 8.0\include;C:\Program Files\MySQL\MySQL Server 8.0\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>STATIC_CONCPP=;</PreprocessorDefinitions>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>C:\Program Files\MySQL\Connector C++ 8.0\lib64;C:\Program Files\MySQL\MySQL Server 8.0\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
-      <AdditionalDependencies>mysqlcppconn8.lib;libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>libmysql.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -121,7 +122,6 @@
     <ClInclude Include="src\Appointment.h" />
     <ClInclude Include="src\BillableLineItem.h" />
     <ClInclude Include="src\Clinician.h" />
-    <ClInclude Include="src\CPSICDataStorage.h" />
     <ClInclude Include="src\CPSICUser.h" />
     <ClInclude Include="src\CPSICUserInterface.h" />
     <ClInclude Include="src\Patient.h" />
@@ -132,19 +132,23 @@
     <ClInclude Include="src\Zone.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="src\AbsoluteTimeRange.cpp" />
     <ClCompile Include="src\Administrator.cpp" />
     <ClCompile Include="src\Appointment.cpp" />
     <ClCompile Include="src\BillableLineItem.cpp" />
     <ClCompile Include="src\Clinician.cpp" />
-    <ClCompile Include="src\CPSICDataStorage.cpp" />
     <ClCompile Include="src\CPSICUser.cpp" />
+    <ClCompile Include="src\CPSICUserInterface.cpp" />
     <ClCompile Include="src\Patient.cpp" />
     <ClCompile Include="src\PaymentReceipt.cpp" />
     <ClCompile Include="src\Schedule.cpp" />
     <ClCompile Include="src\WeeklyAvailability.cpp" />
     <ClCompile Include="src\WeeklyTimeRange.cpp" />
     <ClCompile Include="src\Zone.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="html\index.html" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
