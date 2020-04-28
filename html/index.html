@@ -1,11 +1,13 @@
 <html>
 <head>
-    <title>CPSIC thing</title>
+    <title>CPSIC Test Server</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <style>
         a {
             display: block;
             color: blue;
+            text-decoration: underline;
+            cursor: pointer;
         }
         a.visited {
             color: blue;
@@ -13,13 +15,34 @@
         .calendarRow {
             display: flex;
         }
+        .timesRow{
+            display:flex;
+        }
+        .timeslot {
+            width:100px;
+            height:25px;
+            border:1px solid black;
+            padding: 2px;
+            text-align: center;
+        }
         .calendarDay {
-            width:75px;
-            height:75px;
-            border:2px solid red;
+            width: 85px;
+            height: 85px;
+            border: 1px solid red;
+            padding: 2px;
+        }
+        .appointment {
+            margin-top: 5px;
         }
         form > *{
             margin: 5px 0px 5px 0px;
+        }
+        .bill {
+            display:flex;
+            width:60%;
+        }
+        .bill > p {
+            width:100%;
         }
     </style>
 </head>
@@ -39,12 +62,12 @@
         <div id="patientMenu" v-else-if="currentPage=='menu' && user.role=='patient'">
             <p>Welcome, {{user.name}}</p>
             <a v-on:click.prevent="toCalendar">View Your Appointment(s)</a>
-            <a href>View Bills and Payments</a>
+            <a v-on:click.prevent="toBills">View Bills and Payments</a>
         </div>
         <div id="adminMenu" v-else-if="currentPage=='menu' && user.role=='administrator'">
             <p>Welcome, {{user.name}}</p>
             <a v-on:click.prevent="toCalendar">View Calendar</a>
-            <a href>View Bills and Payments</a>
+            <a v-on:click.prevent="toBills">View Bills and Payments</a>
             <a href>View Stats</a>
         </div>
         <div v-else-if="currentPage=='calendar'">
@@ -52,20 +75,44 @@
             <div class="calendarRow" v-for="week in calDays">
                 <div class="calendarDay" v-for="day in week">
                     <div v-on:click="viewDay(day);">
-                        {{day}} {{getAppointmentCountString(day)}}
+                        {{day}} <a>{{getAppointmentCountString(day)}}</a>
                     </div>
                 </div>
             </div>
         </div>
         <div v-else-if="currentPage=='singleday'">
             <a v-on:click.prevent="toCalendar">Return to calendar</a>
-            <div v-for="app in appointments[calDate]">
-                Patient: {{app.patient}}<br />
-                Clinician: {{app.clinician}}<br />
-                Time slot: {{new Date(app.timeSlot).toLocaleTimeString()}} - {{new Date(app.timeSlot+(30*60*1000)).toLocaleTimeString()}}<br /><br />
+            Schedule for {{shownDate.toDateString()}}
+            <br />
+            <template v-if="user.role!=='administrator'">
+                <div class="appointment" v-for="app in appointmentsByDay[calDate]">
+                    Patient: {{app.patient}}<br />
+                    Clinician: {{app.clinician}}<br />
+                    Time slot: {{new Date(app.timeSlot).toLocaleTimeString()}} - {{new Date(app.timeSlot+(30*60*1000)).toLocaleTimeString()}}<br />
+                    <a v-on:click.prevent="cancelAppointment(app)">Cancel</a>
+                    <br /><br />
+                </div>
+            </template>
+            <template v-else>
+                <div class="timesRow">
+                    <div class="timeslot"></div>
+                    <div class="timeslot" v-for="slot in shownDateTimeSlots">{{slot.time.toLocaleTimeString()}}</div>
+                </div>
+                <div class="timesRow" v-for="clinician in allClinicians">
+                    <div class="timeslot">{{clinician}}</div>
+                    <div class="timeslot" v-for="slot in shownDateTimeSlots">{{slot.appointments.some(a=>a.clinician==clinician)?'x':''}}</div>
+                </div>
+            </template>
+        </div>
+        <div class="ledger" v-else-if="currentPage=='bills'">
+            <div class="bill"><p>Issued</p><p>Services Rendered</p><p>Amount</p></div>
+            <div class="bill" v-for="bill in bills">
+                <p>{{new Date(bill.timestamp).toLocaleString()}}</p>
+                <p>{{bill.services}}</p>
+                <p>${{bill.amount.toFixed(2)}}</p>
             </div>
         </div>
-        <a href v-on:click.prevent="logout" v-if="currentPage!='login'">Log Out</a>
+        <a v-on:click.prevent="logout" v-if="currentPage!='login'">Log Out</a>
     </div>
     <script>
         async function fetchJSON(url){
@@ -95,7 +142,9 @@
                 calDays: calendarMath(new Date().getMonth()),
                 calMonth: new Date().getMonth(),
                 calDate: 0,
-                appointments: []
+                appointments: [],
+                appointmentsByDay: [],
+                bills: []
             },
             mounted: async function(){
                 let userInit = await fetchJSON('/userinfo');
@@ -135,34 +184,64 @@
                 toCalendar: async function(){
                     this.currentPage = "calendar";
                     const apps = await fetchJSON("/appointments");
+                    this.appointments = apps;
                     const day = new Date();
                     day.setMonth(this.calMonth);
                     day.setDate(0);
-                    this.appointments = [];
+                    this.appointmentsByDay = [];
                     for(let i=0; i<day.getDate();i++){
-                        this.appointments.push([]);
+                        this.appointmentsByDay.push([]);
                     }
                     for(const a of apps){
-                        this.appointments[new Date(a.timeSlot).getDate()].push(a);
+                        this.appointmentsByDay[new Date(a.timeSlot).getDate()].push(a);
                     }
                 },
                 getAppointmentCountString(date){
-                    if(this.appointments[date] && this.appointments[date].length){
-                        return "("+this.appointments[date].length+" app.)";
+                    if(this.appointmentsByDay[date] && this.appointmentsByDay[date].length){
+                        return "("+this.appointmentsByDay[date].length+" app.)";
                     }
                     return "";
                 },
                 viewDay(day){
-                    if(day && this.appointments[day] && this.appointments[day].length){
+                    if(day && this.appointmentsByDay[day] && this.appointmentsByDay[day].length){
                         this.calDate = parseInt(day);
                         this.currentPage = "singleday";
                     }
                 },
-                getAllPatients(){
-                    return Array.from(new Set(this.appointments.map(a=>a.patient)));
+                async cancelAppointment(app){
+                    if(window.confirm("are you sure you want to cancel your appointment with "+app.clinician+" at "+new Date(app.timeSlot).toLocaleTimeString()+"?")){
+                        await fetch('/cancel', {method: 'POST', body:JSON.stringify({id:app.id})});
+                        this.toCalendar();
+                    }
                 },
-                getAllClinicians(){
-                    return Array.from(new Set(this.appointments.map(a=>a.clinicians)));
+                async toBills(){
+                    this.currentPage = 'bills';
+                    this.bills = await fetchJSON('/bills');
+                }
+            }, computed:{
+                allClinicians(){
+                    return Array.from(new Set(this.appointments.map(a=>a.clinician)));
+                },
+                shownDate(){
+                    let d = new Date();
+                    d.setDate(this.calDate);
+                    d.setMonth(this.calMonth);
+                    return d;
+                },
+                shownDateTimeSlots(){
+                    let timeslots = [];
+                    let d = this.shownDate;
+                    d.setHours(10);
+                    d.setMinutes(0);
+                    d.setSeconds(0);
+                    while(d.getHours() < 16){
+                        dplus = new Date(d);
+                        dplus.setMinutes(d.getMinutes()+30);
+                        let appointments = this.appointments.filter(a=>a.timeSlot>=d.getTime() && a.timeSlot < dplus.getTime());
+                        timeslots.push({time: d, appointments});
+                        d = dplus;
+                    }
+                    return timeslots;
                 }
             }
         })

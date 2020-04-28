@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include "CPSICUser.h"
 #include "../libraries/httplib.h"
 #include "../libraries/json.hpp"
 using namespace std;
@@ -18,8 +17,12 @@ private:
 	map<string, string> testUserPasswords;
 	map<string, nlohmann::json> testUserData;
 	map<string, nlohmann::json> testAppointments;
+	map<string, nlohmann::json> testBills;
+	map<string, nlohmann::json> testReciepts;
 	httplib::Server::Handler middleware(CPSICRouteHandler f);
 public:
+
+	string staticDir;
 
 	void start();
 
