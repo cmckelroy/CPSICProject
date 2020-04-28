@@ -87,7 +87,9 @@
             <a v-on:click.prevent="currentPage='stats'">View Stats</a>
         </div>
         <div v-else-if="currentPage=='calendar'">
-            <p>{{new Date().toLocaleString('default', { month: 'long' })}}</p>
+            <a style="display:inline-block" v-on:click.prevent="calMonth--;toCalendar();" v-if="calMonth > new Date().getMonth()">prev</a>
+            <span>{{currentMonthName}}</span>
+            <a style="display:inline-block" v-on:click.prevent="calMonth++;toCalendar();" v-if="calMonth < new Date().getMonth()+1">next</a>
             <div class="calendarRow" v-for="week in calDays">
                 <div class="calendarDay" v-for="day in week">
                     <div v-on:click="viewDay(day);">
@@ -171,13 +173,14 @@
             return await resp.json();
         }
         function calendarMath(month){
-            const calDays = Array(35).fill("");
             const today = new Date();
             today.setMonth(month);
             today.setDate(1);
             const firstWeekday = today.getDay();
+            today.setMonth(month+1);
             today.setDate(0);
             const lastDay = today.getDate();
+            const calDays = Array(35).fill("");
             for(let i=firstWeekday; i < firstWeekday+lastDay;i++){
                 calDays[i] = i-firstWeekday+1;
             }
@@ -237,6 +240,7 @@
                     this.currentPage = "menu";
                 },
                 toCalendar: async function(){
+                    this.calDays = calendarMath(this.calMonth),
                     this.currentPage = "calendar";
                     const apps = await fetchJSON("/appointments");
                     this.appointments = apps;
@@ -320,6 +324,11 @@
                 balance(){ return this.receiptsTotal - this.billsTotal; },
                 allClinicians(){
                     return Array.from(new Set(this.appointments.map(a=>a.clinician)));
+                },
+                currentMonthName(){
+                    const d = new Date();
+                    d.setMonth(this.calMonth);
+                    return d.toLocaleString('default', { month: 'long' })
                 },
                 shownDate(){
                     let d = new Date();
