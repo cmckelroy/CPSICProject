@@ -1,10 +1,11 @@
 #include "Appointment.h"
-
+#include "AbsoluteTimeRange.h"
 #include "Patient.h"
 #include "Clinician.h"
 #include <chrono>
+#include <ctime>
 #include <iostream>
-Appointment::Appointment(Patient p, Clinician c, AbsoluteTimeRange abs): clinicianID(c.get_id()), patientID(p.get_id()), time(abs), appointmentID(time(nullptr))
+Appointment::Appointment(Patient p, Clinician c, AbsoluteTimeRange abs): clinicianID(c.get_id()), patientID(p.get_id()), time(abs), appointmentID(std::chrono::seconds(std::time(NULL)).count())
 {
 }
 

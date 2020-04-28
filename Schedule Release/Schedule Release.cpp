@@ -8,6 +8,7 @@
 #include "../src/Administrator.h"
 #include "../src/WeeklyTimeRange.h"
 #include "../src/Appointment.h"
+#include "../src/AbsoluteTimeRange.h"
 
 int main()
 {

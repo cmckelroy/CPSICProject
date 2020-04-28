@@ -2,6 +2,7 @@
 
 void Administrator::generate_campus_alert(string message, string url, vector<string> emailAddresses)
 {
+
 }
 
 vector<PaymentReceipt> Administrator::create_income_report(int reportType)
