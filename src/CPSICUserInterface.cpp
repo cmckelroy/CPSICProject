@@ -78,9 +78,30 @@ void CPSICUserInterface::start()
             };
 
     testAppointments["123456789"] = {
-        {{"patient", "james james"}, {"clinician", "tom geoffery"}, {"timeSlot", 1586338200000}},
-        { {"patient", "james james"}, {"clinician", "tom jeffery"}, {"timeSlot", 1586943000000}}
+        { {"id", 1}, {"patient", "james james"}, {"clinician", "tom geoffery"}, {"timeSlot", 1586363400000}},
+        { {"id", 2}, {"patient", "james james"}, {"clinician", "tom jeffery"}, {"timeSlot", 1586961000000}}
     };
+    testAppointments["222222222"] = {
+        { {"id", 3}, {"patient", "john johnson"}, {"clinician", "joe josephson"}, {"timeSlot", 1586971800000} },
+        { {"id", 4}, {"patient", "john johnson"}, {"clinician", "jim jacobson"}, {"timeSlot", 1586962800000} }
+    };
+
+    testBills["123456789"] = {
+        { {"timestamp", 1585158841000}, {"services", "counseling"}, {"amount", 10.0}},
+        { {"timestamp", 1586693468000}, {"services", "testing"}, {"amount", 10.0}},
+        { {"timestamp", 1587449525000}, {"services", "treatment"}, {"amount", 10.0}}
+    };
+
+    testBills["222222222"] = {
+        { {"timestamp", 1581793830000}, {"services", "counseling"}, {"amount", 30.0}}
+    };
+
+    testReciepts["123456789"] = {
+        { {"timestamp", 1585158841000}, {"payment method", "visa credit card"}, {"amount", 10.0}},
+        { {"timestamp", 1585245241000}, {"payment method", "cash"}, {"amount", 20.0}}
+    };
+
+    int nextAppointmentID = 5;
 
     svr.Post("/login", [=](const Request& req, Response& res) {
 
@@ -105,20 +126,49 @@ void CPSICUserInterface::start()
     }));
 
     svr.Get("/userinfo", middleware([this](const Request& req, Response& res, string ssid) {
-        if (loggedInUsers.count(ssid) > 0) {
-            string userid = loggedInUsers[ssid];
-            json userData = testUserData[userid];
-            res.set_content(userData.dump(), "application/json");
-        }
+        string userid = loggedInUsers[ssid];
+        json userData = testUserData[userid];
+        res.set_content(userData.dump(), "application/json");
     }));
 
     svr.Get("/appointments", middleware([this](const Request& req, Response& res, string ssid) {
-        if (testAppointments.count(loggedInUsers[ssid]) > 0) {
+        string userid = loggedInUsers[ssid];
+        json userData = testUserData[userid];
+        if (userData["role"] == "administrator") {
+            json apps = json::array();
+            for (auto & key : testAppointments) {
+                for (json& app : key.second) {
+                    apps.push_back(app);
+                }
+            }
+            res.set_content(apps.dump(), "application/json");
+        }else if (testAppointments.count(loggedInUsers[ssid]) > 0) {
             res.set_content(testAppointments[loggedInUsers[ssid]].dump(), "application/json");
         }
     }));
 
-    auto ret = svr.set_mount_point("/", "./html");
+    svr.Post("/cancel", middleware([this](const Request& req, Response& res, string ssid) {
+        json details = json::parse(req.body);
+        json apps = testAppointments[loggedInUsers[ssid]];
+        json newapps;
+        for (json app : apps) {
+            if (app["id"] != details["id"]) {
+                newapps.push_back(app);
+            }
+        }
+        testAppointments[loggedInUsers[ssid]] = newapps;
+    }));
+
+    svr.Get("/bills", middleware([this](const Request& req, Response& res, string ssid) {
+        string userid = loggedInUsers[ssid];
+        if (testBills.count(userid) > 0) {
+            res.set_content(testBills[userid].dump(), "application/json");
+        } else {
+            res.set_content(json::array().dump(), "application/json");
+        }
+    }));
+
+    auto ret = svr.set_mount_point("/", staticDir.c_str());
     if (!ret) {
         std::cout << "ERROR: ./html not found, will not be mounted" << std::endl;
     }
