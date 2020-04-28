@@ -14,10 +14,10 @@ class PaymentReceipt
 	
 	time_t timestamp;
 	double amount;
-	string paymentMethod;
+	std::string paymentMethod;
 
 	public:
-		PaymentReceipt(time_t time, double amount, string method);
+		PaymentReceipt(time_t time, double amount, std::string method);
 		/**
 		This function prints the values of its three variables.
 		*/

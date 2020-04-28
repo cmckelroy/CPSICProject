@@ -19,7 +19,7 @@ time_t AbsoluteTimeRange::get_start()
 {
 	return startTime;
 }
-time_t AbsoluteTimeRange::get_end() 
+time_t AbsoluteTimeRange::get_end()
 {
 	return endTime;
 }
