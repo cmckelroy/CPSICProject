@@ -1,9 +1,9 @@
 #include "Zone.h"
-Zone::Zone(string name, bool gca) : name(name), parentZone(nullptr), childZone(nullptr), numOfCases(0), generatesCampusAlert(gca)
+Zone::Zone(string name, Zone * parent, bool gca) : name(name), parentZone(parent), numOfCases(0), generatesCampusAlert(gca)
 {
 }
 
-Zone::Zone(string name, int cases, bool gca) : name(name), parentZone(nullptr), childZone(nullptr), numOfCases(cases), generatesCampusAlert(gca)
+Zone::Zone(string name, Zone* parent, int cases, bool gca) : name(name), parentZone(parent), numOfCases(cases), generatesCampusAlert(gca)
 {
 }
 
@@ -20,10 +20,6 @@ Zone * Zone::parent() {
 	return parentZone;
 }
 
-Zone * Zone::child() {
-	return childZone;
-}
-
 string Zone::get_name() {
 	return name;
 }
@@ -32,15 +28,6 @@ void Zone::set_cases(int cases) {
 	numOfCases = cases;
 }
 
-void Zone::set_parent(Zone z) {
-	parentZone = &z;
-	//z.childZone = this;
-}
-
-void Zone::set_child(Zone z) {
-	childZone = &z;
-	//z.parentZone = this;
-}
 
 string Zone::parent_name() {
 	if (parentZone == nullptr)
@@ -49,10 +36,3 @@ string Zone::parent_name() {
 		return parentZone->get_name();
 }
 
-string Zone::child_name() {
-	if (childZone == nullptr)
-		return "N/A";
-	else
-		return childZone->get_name();
-	
-}

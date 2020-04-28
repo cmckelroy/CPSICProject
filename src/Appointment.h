@@ -32,11 +32,6 @@ public:
 	*/
 	void print_appointment();
 
-	/**
-	This function cancels the appointment.
-	*/
-	void cancel();
-
 
 	//accessor functions
 

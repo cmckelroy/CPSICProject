@@ -2,8 +2,9 @@
 
 #include "Patient.h"
 #include "Clinician.h"
+#include <chrono>
 #include <iostream>
-Appointment::Appointment(Patient p, Clinician c, AbsoluteTimeRange abs): clinicianID(c.get_id()), patientID(p.get_id()), time(abs), appointmentID(time(0))
+Appointment::Appointment(Patient p, Clinician c, AbsoluteTimeRange abs): clinicianID(c.get_id()), patientID(p.get_id()), time(abs), appointmentID(time(nullptr))
 {
 }
 
@@ -17,11 +18,6 @@ void Appointment::print_appointment()
     std::cout << std::endl
     //prints appointment ID
         << "Appointment ID: " << appointmentID << std::endl;
-}
-
-void Appointment::cancel()
-{
-
 }
 
 void Appointment::timestamp_date(time_t timestamp) 

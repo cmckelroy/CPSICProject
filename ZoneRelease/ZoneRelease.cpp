@@ -8,31 +8,35 @@ void print(Zone z);
 
 int main()
 {
-	std::cout << "\nDeclaring a zone for Ohio...\n";
+	using std::cout;
+	using std::endl;
 
-	Zone ohio("Ohio", false);
+	cout << "This program tests the Zone functionality by declaring Zones which may contain Coronavirus; statistics are inputted as examples (and are not accurate).\n"
+		<< "There are three disctinct zones of note to the Kent State Health System: KSU, Ohio, and the United States.\n";
+
+	Zone unitedStates("United States", nullptr, 100000, false);
+	Zone ohio("Ohio", &unitedStates, 7000, false);
+	Zone kent("KSU", &ohio, true);	//if there are cases at KSU, this should generate an alert
+
+	//print zones
+	print(unitedStates);
 	print(ohio);
-
-	std::cout << "\nDeclaring a zone for Kent...\n";
-	Zone kent("Kent", false);
-	print(kent);
-	std::cout << "\nMaking Kent a child of Ohio...\n\n";
-	kent.set_parent(ohio);
-
-	//print kent information again
 	print(kent);
 
-	//print ohio information again
-	print(ohio);
+	if (kent.retrieve_num_of_cases() == 0)
+		cout << "There are no cases at Kent State.\n";
+
+	std::cout << "However, this data can be updated if someone comes into Kent State health services with coronavirus.\n";
+	kent.set_cases(5);
+	print(kent);
 
 	return 0;
 }
 
 void print(Zone z) {
 	using std::endl;
-	std::cout << "Zone: " << z.get_name() << endl
+	std::cout << "\nZone: " << z.get_name() << endl
 		<< "Parent: " << z.parent_name() << endl
-		<< "Child: " << z.child_name() << endl
 		<< "Cases: " << z.retrieve_num_of_cases() << endl
 		<< "GCA: " << z.should_alert() << endl;
 }
