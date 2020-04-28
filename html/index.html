@@ -77,6 +77,7 @@
         <div id="patientMenu" v-else-if="currentPage=='menu' && user.role=='patient'">
             <p>Welcome, {{user.name}}</p>
             <a v-on:click.prevent="toCalendar">View Your Appointment(s)</a>
+            <a v-on:click.prevent="toNewAppointment">Make a New Appointment</a>
             <a v-on:click.prevent="toBills">View Bills and Payments</a>
         </div>
         <div id="adminMenu" v-else-if="currentPage=='menu' && user.role=='administrator'">
@@ -118,6 +119,20 @@
                     <div class="timeslot" v-for="slot in shownDateTimeSlots">{{slot.appointments.some(a=>a.clinician==clinician)?'x':''}}</div>
                 </div>
             </template>
+        </div>
+        <div v-else-if="currentPage=='newAppointment'">
+            <label for="appDate">Choose a date:</label>
+            <input required id="appDate" :min="new Date().toISOString().substr(0,10)" max="2020-05-28" type="date" />
+            <br />
+            <label for="appTime">Choose a time:</label>
+            <input required type="time" id="appTime" min="10:00" max="15:30" value="10:00" step="1800" />
+            <br />
+            <label for="clinician">Request a clinician:</label>
+            <select id="clinician" v-model="selectedClinician">
+                <option required v-for="clinician in clinicians" :value="clinician.name">{{clinician.name}} ({{clinician.type}})</option>
+            </select>
+            <br />
+            <button v-on:click.prevent="makeAppointment">Create</button>
         </div>
         <div v-else-if="currentPage=='bills'">
             <h2>{{user.role=='administrator'?'Total':'Your total'}} current balance: ${{balance.toFixed(2)}}</h2>
@@ -178,6 +193,8 @@
                 calDays: calendarMath(new Date().getMonth()),
                 calMonth: new Date().getMonth(),
                 calDate: 0,
+                selectedClinician: "",
+                clinicians: [],
                 appointments: [],
                 appointmentsByDay: [],
                 bills: [],
@@ -231,7 +248,10 @@
                         this.appointmentsByDay.push([]);
                     }
                     for(const a of apps){
-                        this.appointmentsByDay[new Date(a.timeSlot).getDate()].push(a);
+                        appDate = new Date(a.timeSlot)
+                        if(appDate.getMonth() == this.calMonth){
+                            this.appointmentsByDay[new Date(a.timeSlot).getDate()].push(a);
+                        }
                     }
                 },
                 getAppointmentCountString(date){
@@ -251,6 +271,40 @@
                         await fetch('/cancel', {method: 'POST', body:JSON.stringify({id:app.id})});
                         this.toCalendar();
                     }
+                },
+                async makeAppointment(){
+                    const clinician = document.querySelector("#clinician");
+                    const dateElement = document.querySelector('#appDate');
+                    const timeElement = document.querySelector('#appTime');
+                    if(!dateElement.value){
+                        window.alert("Please enter a date");
+                        return;
+                    }else if(!timeElement.value){
+                        window.alert("Please enter a time");
+                        return;
+                    }
+                    const date = new Date(dateElement.value+"T"+timeElement.value);
+                    if(date.getDay() == 0 || date.getDay() == 6){
+                        window.alert("We are not open on weekends, sorry");
+                        return;
+                    }else if(date.getHours()< 10){
+                        window.alert("We do not open until 10 AM, sorry");
+                        return;
+                    }else if(date.getHours() > 15 && !date.getMinutes() <= 30){
+                        window.alert("Our last appointment is at 3:30 PM, sorry");
+                        return;
+                    }else if (!clinician.value){
+                        window.alert("Please select a clinician");
+                        return;
+                    }else{
+                        const request = { clinician: clinician.value, time: date.getTime()};
+                        await fetch("/newappointment", {method: "POST", body: JSON.stringify(request)});
+                        this.toCalendar();
+                    }
+                },
+                async toNewAppointment(){
+                    this.clinicians = await fetchJSON('/clinicians');
+                    this.currentPage = 'newAppointment';
                 },
                 async toBills(){
                     this.currentPage = 'bills';
