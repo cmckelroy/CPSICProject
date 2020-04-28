@@ -180,11 +180,17 @@
             today.setMonth(month+1);
             today.setDate(0);
             const lastDay = today.getDate();
-            const calDays = Array(35).fill("");
-            for(let i=firstWeekday; i < firstWeekday+lastDay;i++){
+            const initialSquares = firstWeekday+lastDay;
+            const totalSquares = (Math.floor((initialSquares-1)/7)+1)*7;
+            const calDays = Array(totalSquares).fill("");
+            for(let i=firstWeekday; i < initialSquares;i++){
                 calDays[i] = i-firstWeekday+1;
             }
-            return [calDays.slice(0,7),calDays.slice(7,14),calDays.slice(14,21),calDays.slice(21,28),calDays.slice(28,35)];
+            const weeks = [];
+            for(let j=0;j<totalSquares;j+=7){
+                weeks.push(calDays.slice(j,j+7));
+            }
+            return weeks;
         }
         let cpsic = new Vue({
             el: "#root",
