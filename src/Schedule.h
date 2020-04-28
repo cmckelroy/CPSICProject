@@ -10,11 +10,13 @@ private:
 	std::vector<Appointment> appointments;
 public:
 	Schedule();
-	/**
+	/*
+	Schedule(vector<Appointment> apps);
+	
 	This function prints this schedule.
 	
-	*/
+
 	void print();
-	void add_appointment(Appointment app);
-	void remove_appointment();
+	void add(Appointment app);
+	void remove_appointment(int ID);*/
 };

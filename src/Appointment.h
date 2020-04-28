@@ -48,4 +48,7 @@ public:
 	Clinician & get_clinician();
 	//accessor function for time
 	AbsoluteTimeRange get_timeslot();
+
+	void set_timeslot(AbsoluteTimeRange newTimeslot);
+	void set_clinician(Clinician newClinician);
 };
