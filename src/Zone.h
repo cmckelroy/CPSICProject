@@ -13,12 +13,40 @@ class Zone
 protected:
 	string name;  ///< the name of the zone (i.e. "United States")
 	Zone * parentZone;  //< pointer to the parent zone, if there is one.
+	Zone * childZone; //< pointer to child zone, if it exists
 	int numOfCases;  //< number of cases of coronavirus in that zone
 	bool generatesCampusAlert;
+
 public:
+	//constructor; parent and child are initialized to null; cases default = 0
+	Zone(string name, bool gca);
+	//constructor; parent and child are initialized to null
+	Zone(string name, int cases, bool gca);
+
 	/**
 
 	@return Returns the number of coronavirus cases in that zone.
 	*/
 	int retrieve_num_of_cases();
+	//get campus alert bool
+	bool should_alert();
+	//get pointer to parent zone
+	Zone * parent();
+	//get pointer to child zone
+	Zone * child();
+	//get zone name
+	string get_name();
+	//get name of parent zone, if it exists
+	string parent_name();
+	//get name of child zone, if it exists
+	string child_name();
+
+	void set_parent(Zone z);	//sets the parent pointer to Zone z
+	void set_child(Zone z);		//sets hte child pointer to Zone z
+
+
+	//sets the number of cases in a zone
+	void set_cases(int cases);
+
+
 };

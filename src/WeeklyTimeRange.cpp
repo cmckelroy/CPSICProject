@@ -55,7 +55,7 @@ AbsoluteTimeRange WeeklyTimeRange::to_absolute(time_t relativeTo)
 	return AbsoluteTimeRange(startStamp, endStamp);
 }
 
-//function to aid in conversion to absolute - detects how many days are needed to increment by
+//function to aid in conversion to absolute - detects how many days are needed to increment by from Sunday
 int detectIncrements(weekday wkday) {
 	switch(wkday) {
 		case Sunday: return 0;

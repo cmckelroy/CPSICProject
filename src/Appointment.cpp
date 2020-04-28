@@ -25,7 +25,7 @@ void Appointment::cancel()
 
 void Appointment::timestamp_date(time_t timestamp) 
 {
-    string localTime(asctime(localtime(&timestamp)));
+    string localTime(asctime(localtime(&timestamp))); //note:asctime should probably be changed to asctime_s
     //converts timestamp to a string containing the local time
     //example of what localTime would contain: "Tue May 26 21:51:50 2015"
 
@@ -63,4 +63,11 @@ Clinician & Appointment::get_clinician() {
 }
 AbsoluteTimeRange Appointment::get_timeslot() {
     return time;
+}
+
+void Appointment::set_timeslot(AbsoluteTimeRange newTimeslot) {
+	time = newTimeslot;
+}
+void Appointment::set_clinician(Clinician newClinician) {
+	clinician = newClinician;
 }

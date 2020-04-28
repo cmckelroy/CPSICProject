@@ -45,6 +45,12 @@ public:
 
 	Appointment create_appointment(Clinician clinician, AbsoluteTimeRange timeslot);
 
+	//function that takes in an appointment and a new timeslot, and reschedules that appointment to that time
+	void reschedule_appointment(Appointment app, AbsoluteTimeRange timeslot);
+
+	//function that takes in an appointment, a timeslot, and a new clinician and reschedules the appointment with that clinician
+	void reschedule_with_new(Appointment app, AbsoluteTimeRange timeslot, Clinician newClinician);
+
 	/**
 	This function determines the user's balance from their outstanding bills.
 	*/
