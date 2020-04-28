@@ -96,9 +96,9 @@ void CPSICUserInterface::start()
         { {"timestamp", 1581793830000}, {"services", "counseling"}, {"amount", 30.0}}
     };
 
-    testReciepts["123456789"] = {
-        { {"timestamp", 1585158841000}, {"payment method", "visa credit card"}, {"amount", 10.0}},
-        { {"timestamp", 1585245241000}, {"payment method", "cash"}, {"amount", 20.0}}
+    testReceipts["123456789"] = {
+        { {"timestamp", 1585158841000}, {"method", "visa credit card"}, {"amount", 10.0}},
+        { {"timestamp", 1590520583000}, {"method", "cash"}, {"amount", 20.0}}
     };
 
     int nextAppointmentID = 5;
@@ -161,12 +161,41 @@ void CPSICUserInterface::start()
 
     svr.Get("/bills", middleware([this](const Request& req, Response& res, string ssid) {
         string userid = loggedInUsers[ssid];
-        if (testBills.count(userid) > 0) {
+        json userData = testUserData[userid];
+        if (userData["role"] == "administrator") {
+            json bills = json::array();
+            for (auto& key : testBills) {
+                for (json& bill : key.second) {
+                    bills.push_back(bill);
+                }
+            }
+            res.set_content(bills.dump(), "application/json");
+        } else if (testBills.count(userid) > 0) {
             res.set_content(testBills[userid].dump(), "application/json");
         } else {
             res.set_content(json::array().dump(), "application/json");
         }
     }));
+
+    svr.Get("/receipts", middleware([this](const Request& req, Response& res, string ssid) {
+        string userid = loggedInUsers[ssid];
+        json userData = testUserData[userid];
+        if (userData["role"] == "administrator") {
+            json receipts = json::array();
+            for (auto& key : testReceipts) {
+                for (json& receipt : key.second) {
+                    receipts.push_back(receipt);
+                }
+            }
+            res.set_content(receipts.dump(), "application/json");
+        }
+        else if (testReceipts.count(userid) > 0) {
+            res.set_content(testReceipts[userid].dump(), "application/json");
+        }
+        else {
+            res.set_content(json::array().dump(), "application/json");
+        }
+        }));
 
     auto ret = svr.set_mount_point("/", staticDir.c_str());
     if (!ret) {

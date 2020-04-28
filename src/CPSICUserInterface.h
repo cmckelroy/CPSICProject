@@ -18,7 +18,7 @@ private:
 	map<string, nlohmann::json> testUserData;
 	map<string, nlohmann::json> testAppointments;
 	map<string, nlohmann::json> testBills;
-	map<string, nlohmann::json> testReciepts;
+	map<string, nlohmann::json> testReceipts;
 	httplib::Server::Handler middleware(CPSICRouteHandler f);
 public:
 
