@@ -70,20 +70,20 @@ void CPSICUserInterface::start()
 
     testUserData["123456789"] = {
                 {"role", "patient"},
-                {"name", "james james"}
+                {"name", "James James"}
             };
     testUserData["987654321"] = {
                 {"role", "administrator"},
-                {"name", "jone jones"}
+                {"name", "Jone Jones"}
             };
 
     testAppointments["123456789"] = {
-        { {"id", 1}, {"patient", "james james"}, {"clinician", "tom geoffery"}, {"timeSlot", 1586363400000}},
-        { {"id", 2}, {"patient", "james james"}, {"clinician", "tom jeffery"}, {"timeSlot", 1586961000000}}
+        { {"id", 1}, {"patient", "James James"}, {"clinician", "Tom Geoffery"}, {"timeSlot", 1586363400000}},
+        { {"id", 2}, {"patient", "James James"}, {"clinician", "Tom Jeffery"}, {"timeSlot", 1586961000000}}
     };
     testAppointments["222222222"] = {
-        { {"id", 3}, {"patient", "john johnson"}, {"clinician", "joe josephson"}, {"timeSlot", 1586971800000} },
-        { {"id", 4}, {"patient", "john johnson"}, {"clinician", "jim jacobson"}, {"timeSlot", 1586962800000} }
+        { {"id", 3}, {"patient", "John Johnson"}, {"clinician", "Joe Josephson"}, {"timeSlot", 1586971800000} },
+        { {"id", 4}, {"patient", "John Johnson"}, {"clinician", "Jim Jacobson"}, {"timeSlot", 1586962800000} }
     };
 
     testBills["123456789"] = {
@@ -157,6 +157,34 @@ void CPSICUserInterface::start()
             }
         }
         testAppointments[loggedInUsers[ssid]] = newapps;
+    }));
+
+    svr.Post("/newappointment", middleware([this,&nextAppointmentID](const Request& req, Response& res, string ssid) {
+        json details = json::parse(req.body);
+        string userid = loggedInUsers[ssid];
+        json userData = testUserData[userid];
+        json newAppointment = {
+                {"id", nextAppointmentID++},
+                {"patient", (std::string)userData["name"]},
+                {"clinician", details["clinician"]},
+                {"timeSlot", details["time"]}
+        };
+        if (testAppointments.count(userid) > 0) {
+            testAppointments[userid].push_back(newAppointment);
+        } else {
+            testAppointments[userid] = json::array();
+            testAppointments[userid].push_back(newAppointment);
+        }
+    }));
+
+    svr.Get("/clinicians", middleware([this](const Request& req, Response& res, string ssid) {
+        json clinicians = {
+            {{"name", "Tom Geoffery"}, {"type", "counseling"}},
+            {{"name", "Tom Jeffery"}, {"type", "counseling"}},
+            {{"name", "Joe Josephson"}, {"type", "doctor"}},
+            {{"name", "Jim Jacobson"}, {"type", "doctor"}}
+        };
+        res.set_content(clinicians.dump(), "application/json");
     }));
 
     svr.Get("/bills", middleware([this](const Request& req, Response& res, string ssid) {
