@@ -13,4 +13,5 @@ protected:
 public:
 	CPSICUser();
 	string get_name();
+	int get_id();
 };

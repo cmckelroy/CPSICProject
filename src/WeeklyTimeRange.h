@@ -15,15 +15,14 @@ enum weekday {Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday};
 class WeeklyTimeRange
 {
 private:
-	weekday startDay;
+	weekday wkday;
 	int startHour;  ///< an hour value between 0 and 23 for the start
 	int startMinute;  ///< minute values can be 0-59
-	weekday endDay;
 	int endHour;
 	int endMinute;
 
 public:
-	WeeklyTimeRange(weekday sd, int sh, int sm, weekday ed, int eh, int em);
+	WeeklyTimeRange(weekday wkday, int sh, int sm, int eh, int em);
 	/**
 	This function prints a weekly time range.
 

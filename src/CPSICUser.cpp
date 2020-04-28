@@ -6,3 +6,6 @@ CPSICUser::CPSICUser()
 string CPSICUser::get_name() {
     return firstName + " " + lastName;
 }
+int CPSICUser::get_id() {
+	return KSUID;
+}

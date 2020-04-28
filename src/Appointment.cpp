@@ -3,14 +3,15 @@
 #include "Patient.h"
 #include "Clinician.h"
 #include <iostream>
-Appointment::Appointment(Patient &p, Clinician &c, AbsoluteTimeRange abs):clinician(c), patient(p), time(abs)
+Appointment::Appointment(Patient p, Clinician c, AbsoluteTimeRange abs): clinicianID(c.get_id()), patientID(p.get_id()), time(abs), appointmentID(time(0))
 {
 }
 
 void Appointment::print_appointment()
 {
-    std::cout << patient.get_name() << " has scheduled an appointment with " << clinician.get_name()
-        << "for ";
+	std::cout << "Patient: " << patientID	//this could be changed to patient name (and clinican name) when we have a method for getting patient/clinican from stored ID
+		<< "\nClinician: " << clinicianID << std::endl
+		<< "On: ";
     //prints date and start time of appointment
     timestamp_date(time.get_start());
     std::cout << std::endl
@@ -55,11 +56,11 @@ void Appointment::timestamp_date(time_t timestamp)
 int Appointment::get_id() {
     return appointmentID;
 }
-Patient & Appointment::get_patient() {
-    return patient;
+int Appointment::get_patientID() {
+	return patientID;
 }
-Clinician & Appointment::get_clinician() {
-    return clinician;
+int Appointment::get_clinicianID() {
+    return clinicianID;
 }
 AbsoluteTimeRange Appointment::get_timeslot() {
     return time;
@@ -69,5 +70,5 @@ void Appointment::set_timeslot(AbsoluteTimeRange newTimeslot) {
 	time = newTimeslot;
 }
 void Appointment::set_clinician(Clinician newClinician) {
-	clinician = newClinician;
+	clinicianID = newClinician.get_id();
 }

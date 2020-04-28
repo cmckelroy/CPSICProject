@@ -9,6 +9,24 @@
 int main()
 {
 	std::cout << "Welcome to the appointment system for CPSIC.\n";
+	std::cout << "Choose a view to exemplify or type Q to quit: \n"
+		<< "1. Patient"
+		<< "2. Clinician"
+		<< "Input: ";
+	char choice;
+	cin >> choice;
+
+	while (choice != 'Q' && choice != 'q') {
+		//enter 'clinican' functions test
+		if (choice == '2') {
+
+		}
+		//enter 'patient' functions test
+		else {
+
+		}
+	}
+
 	
 }
 

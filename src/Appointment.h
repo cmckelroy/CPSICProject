@@ -14,8 +14,8 @@ class Appointment
 private:
 	int appointmentID; ///< primary key of the appointment in the database
 	AbsoluteTimeRange time;
-	Patient &patient;
-	Clinician &clinician;
+	int patientID;
+	int clinicianID;
 
 	/**
 	This function prints a timestamp as a date
@@ -24,7 +24,7 @@ private:
 	void timestamp_date(time_t timestamp);
 
 public:
-	Appointment(Patient &p, Clinician &c, AbsoluteTimeRange abs);
+	Appointment(Patient p, Clinician c, AbsoluteTimeRange abs);
 
 	/**
 	This function prints an appointment.
@@ -43,9 +43,9 @@ public:
 	//accessor function for appointmentID
 	int get_id();
 	//accessor function for reference to patient
-	Patient & get_patient();
+	int get_patientID();
 	//accessor function for reference to clinician
-	Clinician & get_clinician();
+	int get_clinicianID();
 	//accessor function for time
 	AbsoluteTimeRange get_timeslot();
 

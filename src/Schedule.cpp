@@ -17,6 +17,7 @@ void Schedule::add(Appointment app) {
     appointments.push_back(app);
 }
 
-void Schedule::remove_appointment()
+void Schedule::remove_appointment(int appID)
 {
+
 }

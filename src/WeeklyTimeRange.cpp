@@ -1,21 +1,26 @@
 #include "WeeklyTimeRange.h"
 #include <iostream>
 
-WeeklyTimeRange::WeeklyTimeRange(weekday sd, int sh, int sm, weekday ed, int eh, int em) : startDay(sd), startHour(sh), startMinute(sm), endDay(ed), endHour(eh), endMinute(em)
+WeeklyTimeRange::WeeklyTimeRange(weekday wkday, int sh, int sm, int eh, int em) : wkday(wkday), startHour(sh), startMinute(sm), endHour(eh), endMinute(em)
 {
 }
 
 void WeeklyTimeRange::print()
 {
-	std::cout << "Start: " << startDay << " at " << startHour << ":" << startMinute << std::endl;
-	std::cout << "End: " << endDay << " at " << endHour << ":" << endMinute << std::endl; 
+	std::cout << "Start: " << wkday << " at " << startHour << ":" << startMinute << std::endl;
+	std::cout << "End: " << wkday << " at " << endHour << ":" << endMinute << std::endl; 
 }
+
+int detectIncrements(weekday wkday);
+
+void increment(int& mon, int& day, int n);
+
 
 AbsoluteTimeRange WeeklyTimeRange::to_absolute(time_t relativeTo)
 {
 	struct tm * weekInfo = gmtime(&relativeTo);
-	struct tm * start;
-	struct tm * end;
+	struct tm* start;
+	struct tm* end;
 
 	//for START---------------
 	start->tm_year = weekInfo->tm_year;	//get year
@@ -23,7 +28,7 @@ AbsoluteTimeRange WeeklyTimeRange::to_absolute(time_t relativeTo)
 	//get month and month day information
 	int mon = weekInfo->tm_mon;
 	int day = weekInfo->tm_mday;
-	increment(mon, day, detectIncrements(startDay));
+	increment(mon, day, detectIncrements(wkday));
 	start->tm_mon = mon;
 	start->tm_mday = day;
 
@@ -37,9 +42,6 @@ AbsoluteTimeRange WeeklyTimeRange::to_absolute(time_t relativeTo)
 	end->tm_year = weekInfo->tm_year;
 	
 	//get month and month day information
-	int mon = weekInfo->tm_mon;
-	int day = weekInfo->tm_mday;
-	increment(mon, day, detectIncrements(endDay));
 	end->tm_mon = mon;
 	end->tm_mday = day;
 	
