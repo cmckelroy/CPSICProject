@@ -18,41 +18,41 @@ void increment(int& mon, int& day, int n);
 
 AbsoluteTimeRange WeeklyTimeRange::to_absolute(time_t relativeTo)
 {
-	struct tm * weekInfo = gmtime(&relativeTo);
-	struct tm* start;
-	struct tm* end;
+	struct tm  * weekInfo = gmtime(&relativeTo);
+	struct tm start;
+	struct tm end;
 
 	//for START---------------
-	start->tm_year = weekInfo->tm_year;	//get year
+	start.tm_year = weekInfo->tm_year;	//get year
 
 	//get month and month day information
 	int mon = weekInfo->tm_mon;
 	int day = weekInfo->tm_mday;
 	increment(mon, day, detectIncrements(wkday));
-	start->tm_mon = mon;
-	start->tm_mday = day;
+	start.tm_mon = mon;
+	start.tm_mday = day;
 
 	//get time information	
-	start->tm_hour = startHour;
-	start->tm_min = startMinute;
-	start->tm_sec = 0;
+	start.tm_hour = startHour;
+	start.tm_min = startMinute;
+	start.tm_sec = 0;
 
 
 	//for END---------
-	end->tm_year = weekInfo->tm_year;
+	end.tm_year = weekInfo->tm_year;
 	
 	//get month and month day information
-	end->tm_mon = mon;
-	end->tm_mday = day;
+	end.tm_mon = mon;
+	end.tm_mday = day;
 	
 	//get time information
-	end->tm_hour = endHour;
-	end->tm_min = endMinute;
-	end->tm_sec = 0;
+	end.tm_hour = endHour;
+	end.tm_min = endMinute;
+	end.tm_sec = 0;
 
 	//CONVERT start and end (tm structs) into timestamps (time_t)--------
-	time_t startStamp = mktime(start);
-	time_t endStamp = mktime(end);
+	time_t startStamp = mktime(&start);
+	time_t endStamp = mktime(&end);
 
 	return AbsoluteTimeRange(startStamp, endStamp);
 }
