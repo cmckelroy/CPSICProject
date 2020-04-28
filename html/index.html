@@ -37,12 +37,27 @@
         form > *{
             margin: 5px 0px 5px 0px;
         }
+        .ledger {
+            display: flex;
+        }
+        .ledger > div {
+            width:100%;
+        }
         .bill {
             display:flex;
-            width:60%;
+            width:90%;
+            margin-right:10px;
+            padding: 3px;
         }
         .bill > p {
             width:100%;
+        }
+        .bill:nth-child(2n) {
+            background-color: lightgrey;
+        }
+        iframe {
+            width: 1200px;
+            height: 100%;
         }
     </style>
 </head>
@@ -68,7 +83,7 @@
             <p>Welcome, {{user.name}}</p>
             <a v-on:click.prevent="toCalendar">View Calendar</a>
             <a v-on:click.prevent="toBills">View Bills and Payments</a>
-            <a href>View Stats</a>
+            <a v-on:click.prevent="currentPage='stats'">View Stats</a>
         </div>
         <div v-else-if="currentPage=='calendar'">
             <p>{{new Date().toLocaleString('default', { month: 'long' })}}</p>
@@ -82,14 +97,14 @@
         </div>
         <div v-else-if="currentPage=='singleday'">
             <a v-on:click.prevent="toCalendar">Return to calendar</a>
-            Schedule for {{shownDate.toDateString()}}
+            <h2>Schedule for {{shownDate.toDateString()}}</h2>
             <br />
             <template v-if="user.role!=='administrator'">
                 <div class="appointment" v-for="app in appointmentsByDay[calDate]">
                     Patient: {{app.patient}}<br />
                     Clinician: {{app.clinician}}<br />
                     Time slot: {{new Date(app.timeSlot).toLocaleTimeString()}} - {{new Date(app.timeSlot+(30*60*1000)).toLocaleTimeString()}}<br />
-                    <a v-on:click.prevent="cancelAppointment(app)">Cancel</a>
+                    <a v-on:click.prevent="cancelAppointment(app)">Cancel appointment</a>
                     <br /><br />
                 </div>
             </template>
@@ -104,13 +119,34 @@
                 </div>
             </template>
         </div>
-        <div class="ledger" v-else-if="currentPage=='bills'">
-            <div class="bill"><p>Issued</p><p>Services Rendered</p><p>Amount</p></div>
-            <div class="bill" v-for="bill in bills">
-                <p>{{new Date(bill.timestamp).toLocaleString()}}</p>
-                <p>{{bill.services}}</p>
-                <p>${{bill.amount.toFixed(2)}}</p>
+        <div v-else-if="currentPage=='bills'">
+            <h2>{{user.role=='administrator'?'Total':'Your total'}} current balance: ${{balance.toFixed(2)}}</h2>
+            <div class="ledger">
+                <div>
+                    <h2>Bills (total: ${{billsTotal.toFixed(2)}})</h2>
+                    <div class="bill"><p>Issued</p><p>Services Rendered</p><p>Amount</p></div>
+                    <div class="bill" v-for="bill in bills">
+                        <p>{{new Date(bill.timestamp).toLocaleString()}}</p>
+                        <p>{{bill.services}}</p>
+                        <p>${{bill.amount.toFixed(2)}}</p>
+                    </div>
+                </div>
+                <div>
+                    <h2>Payment receipts (total: ${{receiptsTotal.toFixed(2)}})</h2>
+                    <div class="bill"><p>Payment Time</p><p>Payment Method</p><p>Amount</p></div>
+                    <div class="bill" v-for="receipt in receipts">
+                        <p>{{new Date(receipt.timestamp).toLocaleString()}}</p>
+                        <p>{{receipt.method}}</p>
+                        <p>${{receipt.amount.toFixed(2)}}</p>
+                    </div>
+                </div>
             </div>
+        </div>
+        <div v-else-if="currentPage=='stats'">
+            <a style="display:inline;" v-on:click.prevent="stats='United States';">United States</a> - <a style="display:inline;" v-on:click.prevent="stats='Ohio';">Ohio</a>
+            <br />
+            <iframe :src="statsURL"></iframe>
+            <br />
         </div>
         <a v-on:click.prevent="logout" v-if="currentPage!='login'">Log Out</a>
     </div>
@@ -144,7 +180,9 @@
                 calDate: 0,
                 appointments: [],
                 appointmentsByDay: [],
-                bills: []
+                bills: [],
+                receipts: [],
+                stats: "United States"
             },
             mounted: async function(){
                 let userInit = await fetchJSON('/userinfo');
@@ -216,9 +254,16 @@
                 },
                 async toBills(){
                     this.currentPage = 'bills';
+                    const sort = (a,b) => a.timestamp-b.timestamp;
                     this.bills = await fetchJSON('/bills');
+                    this.bills.sort(sort);
+                    this.receipts = await fetchJSON('/receipts');
+                    this.receipts.sort(sort);
                 }
             }, computed:{
+                billsTotal(){ return this.bills.reduce((a,c)=>a+c.amount, 0); },
+                receiptsTotal(){ return this.receipts.reduce((a,c)=>a+c.amount, 0); },
+                balance(){ return this.receiptsTotal - this.billsTotal; },
                 allClinicians(){
                     return Array.from(new Set(this.appointments.map(a=>a.clinician)));
                 },
@@ -242,6 +287,13 @@
                         d = dplus;
                     }
                     return timeslots;
+                },
+                statsURL(){
+                    pages = {
+                        'United States': 'https://www.worldometers.info/coronavirus/country/us/',
+                        'Ohio': '/ohio.html'
+                    };
+                    return pages[this.stats];
                 }
             }
         })
