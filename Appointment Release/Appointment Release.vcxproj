@@ -155,8 +155,10 @@
     <ClCompile Include="..\src\Appointment.cpp" />
     <ClCompile Include="..\src\Clinician.cpp" />
     <ClCompile Include="..\src\CPSICUser.cpp" />
+    <ClCompile Include="..\src\MedicalRecord.cpp" />
     <ClCompile Include="..\src\Patient.cpp" />
     <ClCompile Include="..\src\Schedule.cpp" />
+    <ClCompile Include="..\src\WeeklyTimeRange.cpp" />
     <ClCompile Include="Appointment Release.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -164,8 +166,10 @@
     <ClInclude Include="..\src\Appointment.h" />
     <ClInclude Include="..\src\Clinician.h" />
     <ClInclude Include="..\src\CPSICUser.h" />
+    <ClInclude Include="..\src\MedicalRecord.h" />
     <ClInclude Include="..\src\Patient.h" />
     <ClInclude Include="..\src\Schedule.h" />
+    <ClInclude Include="..\src\WeeklyTimeRange.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

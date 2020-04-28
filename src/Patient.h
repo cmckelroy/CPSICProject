@@ -5,6 +5,7 @@
 #include "BillableLineItem.h"
 #include "Appointment.h"
 #include "Clinician.h"
+#include "MedicalRecord.h"
 #include <vector>
 
 /*! \brief A patient is a KSU student or staff member who has sought care from the medical department.
@@ -18,13 +19,11 @@ class Patient : public CPSICUser
 private:
 	bool isStudent;
 	bool isStaff;
-	vector<std::string> healthRecords;
 	vector<BillableLineItem> bill;
 	vector<PaymentReceipt> receipts;
-	bool hasShownFluSymptoms;
-	bool isInfected;
-	bool hasSoughtCounseling;
+	MedicalRecord record;
 public:
+	Patient(string name, string surname, int id, string pass, bool stud, bool staff, MedicalRecord record);
 	/**
 	Allows the user to make a payment
 

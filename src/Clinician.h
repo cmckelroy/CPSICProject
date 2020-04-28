@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include "Schedule.h"
+#include "CPSICUser.h"
 using namespace std;
 
 /*! \brief A clinician object represents a specific general practitioner, nurse, or counselor employeed
@@ -10,12 +11,13 @@ using namespace std;
  */
 /*! Constraints: Title must be "general practitioner", "counselor", "nurse", or other preaproved title.
 */
-#include "CPSICUser.h"
 class Clinician : public CPSICUser
 {
 private:
 	string jobTitle;
 public:
+	Clinician(string name, string surname, int id, string pass, string title);
+	void reschedule_appointment(Appointment app, AbsoluteTimeRange newTimeslot);
 	/**
 	This function allows a clinician to view their schedule.
 	

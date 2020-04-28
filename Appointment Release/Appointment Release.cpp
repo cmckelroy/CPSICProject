@@ -5,29 +5,66 @@
 #include "../src/Appointment.h"
 #include "../src/Patient.h"
 #include "../src/Clinician.h"
+#include "../src/WeeklyTimeRange.h"
 
 int main()
 {
-	std::cout << "Welcome to the appointment system for CPSIC.\n";
-	std::cout << "Choose a view to exemplify or type Q to quit: \n"
-		<< "1. Patient"
-		<< "2. Clinician"
-		<< "Input: ";
-	char choice;
-	cin >> choice;
+	std::cout << "Welcome to the appointment system for CPSIC.\n\n";
+	std::cout << "First, we will exemplify appointment creation/modification through the lens of a patient:\n\n";
 
-	while (choice != 'Q' && choice != 'q') {
-		//enter 'clinican' functions test
-		if (choice == '2') {
+	//instantiate PATIENT
+	Patient testPatient("Edward", "Hyde", 666, "evil", false, true, MedicalRecord());
+	//instantiate CLINICIAN
+	Clinician testDoctor("Henry", "Jekyll", 777, "kittens", "General Practicioner");
 
-		}
-		//enter 'patient' functions test
-		else {
 
-		}
-	}
+	//PATIENT FUNCTIONS TEST-------------------
 
-	
+	//display patient
+	std::cout << "Patient: " << testPatient.get_name() << std::endl;
+	//display patient functions (in app release scope)
+	std::cout << "\nAppointment Powers for Patients:\n"
+		<< "1. Create Appointment:\n"
+		<< "Scheduling an appointment with a doctor for Monday Apr 27 at 12:30 P.M.\n";
+
+	//CREATE APPOINTMENT
+	WeeklyTimeRange testTime(Monday, 12, 30, 13, 0);	//Monday at 12:30 - 1:00
+	time_t startOfWeek = 1587859200;	//relative to this sunday (apr 24th 2020)
+	AbsoluteTimeRange appTimeslot= testTime.to_absolute(startOfWeek);
+
+	Appointment testApp = testPatient.create_appointment(testDoctor, appTimeslot);
+	//display created appointment
+	testApp.print_appointment();
+
+
+	//RESCHEDULE APPOINTMENT
+	std::cout << "2. Reschedule Appointment:\n"
+		<< "Rescheduling appointment for Wednesday at the same time.\n";
+
+	WeeklyTimeRange testTime2(Wednesday, 12, 30, 13, 0);
+	appTimeslot = testTime2.to_absolute(startOfWeek);
+
+	testPatient.reschedule_appointment(testApp, appTimeslot);
+	testApp.print_appointment(); //display
+
+	//CLINICIAN FUNCTIONS TEST-----------------
+
+	//display clinician
+	std::cout << "Clinician: " << testDoctor.get_name() << std::endl;
+
+	std::cout << "\nAppointment Powers for Clinicians:\n"
+		<< "1. Reschedule Appointment:\n"
+		<< "Rescheduling previous appointment for Wednesday at a later time (4PM)\n";
+
+
+	//RESCHEDULE APPOINTMENT
+	WeeklyTimeRange testTime3(Wednesday, 16, 0, 16, 30);
+	appTimeslot = testTime3.to_absolute(startOfWeek);
+
+	testDoctor.reschedule_appointment(testApp, appTimeslot);
+	testApp.print_appointment(); //display
+
+	return 0;
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

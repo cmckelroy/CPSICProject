@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include "Appointment.h"
 using namespace std;
 
 /*! \brief This class is the parent class of the Clinician, Patient, and Administrator classes.
@@ -11,7 +12,9 @@ protected:
 	string firstName;
 	string lastName;
 public:
-	CPSICUser();
+	CPSICUser(string name, string surname, int id, string pass);
 	string get_name();
 	int get_id();
+	//prints appointment information given an appointmentID and returns a reference to the appointment
+	//Appointment & view_appointment(int appointmentID);
 };
